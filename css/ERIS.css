@@ -1,0 +1,51 @@
+.ERIS
+{
+	background-image: url("img/icons.png");
+	background-position: .265em -21.8em;
+}
+.search_type:checked + span
+{
+	color: #DE0A0A;
+}
+.filteractive
+{
+	color: #DE0A0A;
+}
+.filteractive:hover
+{
+	color: #DE0A0A;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.ERIS
+	{
+		background-position: .4em -21.5em;
+	}
+}
+.li_checked
+{
+	background-color: #b72727;
+	color: #FFF;
+}
+.li_checked2
+{
+	background-color: #b72727;
+	color: #FFF;
+}
+.ERIS_layer
+{
+	display: none;
+}
+.li_checked
+{
+	background-color: #b72727;
+	color: #FFF;
+}
+button, .button
+{
+	background-color: #b72727;
+	border-color: #8d1e1e;
+}
+.property_toggle
+{
+    color: #DE0A0A;
+}
