@@ -62,6 +62,7 @@
 								<button id="pan" title="Pan Map" class="pan tiny secondary button_clicked toolbutton"></button>
 								<button id="identify" title="Identify" class="identify tiny secondary toolbutton"></button>
 								<button id="parcel" title="Parcel Select" class="parcel tiny secondary toolbutton"></button>
+								<button id="utility" title="Utility Select" class="tiny secondary toolbutton util"></button>
 								<button id="measure" title="Measure" class="measure tiny secondary toolbutton"></button>
 <?php if ($_SESSION['isERIS']): ?>
 								<button id="ERIS" title="ERIS" class="ERIS tiny secondary toolbutton"></button>

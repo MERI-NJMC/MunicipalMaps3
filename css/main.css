@@ -441,6 +441,10 @@ nav ul li ul li a
 	margin-bottom: 0;
 	width: 25px;
 }
+.util {
+	background-image: url("img/util.png");
+	background-position: .45em .45em;
+}
 .zoomin
 {
 	background-position: .45em .45em;

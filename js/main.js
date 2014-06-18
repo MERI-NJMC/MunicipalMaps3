@@ -1425,7 +1425,275 @@ function f_map_measure() {
 	"use strict";
 	document.getElementById("dMeasureTool").style.display = "block";
 }
-function f_map_click_handler(evt_click) {
+function f_map_util_exec(map, evt) {
+
+	 var xhr = new XMLHttpRequest(),
+                json;
+            xhr.open('POST', 'php/identifylayers.php', false);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");		
+            xhr.send("json=" + JSON.stringify(evt.mapPoint) + "&extent=" + JSON.stringify(map.extent));
+            if(xhr.readyState === 4 && xhr.status === 200)
+            {
+                if(xhr.responseText !== "")
+                {
+                    json = JSON.parse(xhr.responseText);
+                    console.log(json);
+                    if (json['layer'] == "Catchbasin") {
+                    	basinPopInfo(map,evt,json);
+                    } else if (json['layer'] == "Storm Water Manhole") {
+                    	swManholeInfo(map,evt,json);
+                    } else if (json['layer'] == "Outfall") {
+                    	outfallInfo(map,evt,json);
+                    } else if(json['layer'] == "Storm Water Gravity Main") {
+                    	slineInfo(map,evt,json);
+                    }
+                    
+                   	                 
+                }
+            }
+}
+function slineInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		ownedBy = (json['ownedBy'] != "") ? json['ownedBy'] : "",
+		muni = (json['muni'] != "Null") ? json['muni'] : "",
+		material = (json['material'] != "") ? json['material'] : "",
+		css = (json['css'] != "") ? json['css'] : "",
+		dia = (json['dia'] != "") ? json['dia'] : "",
+		height = (json['height'] != "") ? json['height'] : "",
+		width = (json['width'] != "") ? json['width'] : "",
+		usi = (json['usi'] != "") ? json['usi'] : "",
+		dsi = (json['dsi'] != "") ? json['dsi'] : "",
+
+		cont = '<div>' +
+					'<p><b>Stormline ID#: </b>'+json['slid']+'</p>' +
+					'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+					'<p><b>Municipality: </b>'+muni+'</p>' +
+					'<p><b>Material: </b>'+material+'</p>' +
+					'<p><b>Cross Section Shape: </b>'+css+'</p>' +
+					'<p><b>Height: </b>'+height+'</p>' +
+					'<p><b>Width: </b>'+width+'</p>' +
+					'<p><b>Upstream Invert: </b>'+usi+'</p>' +
+					'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
+			   '</div>';
+	popup.setTitle("Selected Storm Water Line");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+} 
+function outfallInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		ownedBy = (json['ownedBy'] != "") ? json['ownedBy'] : "",
+		muni = (json['muni'] != "Null") ? json['muni'] : "",
+		locDesc = (json['locDesc'] != "Null") ? json['locDesc'] : "",
+		material = (json['material'] != "Null") ? json['material'] : "",
+		recWater = (json['recWater'] != "Null") ? json['recWater'] : "",
+		comments = (json['comments'] != "Null") ? json['comments'] : "";
+	var dia = (json['dia'] != "Null") ? Number(json['dia']) : -1;
+ 	if (dia != -1) {
+ 		var diaFt = Math.floor(dia);
+ 		var diaIn = ((dia - diaFt) * 12).toFixed(0);
+ 	} else {
+ 		var diaFt = 0;
+ 		var diaIn = 0;
+ 	} 
+ 	dia = diaFt + ' (ft) ' + diaIn + ' (in)'; 
+
+ 	var cont = '<div>' + 
+ 					'<p><b>Outfall ID#: </b>'+json['oid']+'</p>' +
+ 					'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+ 					'<p><b>Municipality: </b>'+muni+'</p>' +
+ 					'<p><b>Location Description: </b>'+locDesc+'</p>' +
+ 					'<p><b>Material: </b>'+material+'</p>' +
+ 					'<p><b>Receiving Water: </b>'+recWater+'</p>' +
+ 					'<p><b>Diameter: </b>'+dia+'</p>' +
+ 					'<p><b>Comments: </b><p>'+comments+'</p></p>' +
+ 			   '</div>';
+ 	popup.setTitle("Selected Outfall");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+}
+function swManholeInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		mid = json['manhole#'],
+		address = (json['address'] != null) ? json['address'] : "",
+		topRimEl = (json['topRimEl'] != null) ? json['topRimEl'] : 0,
+		condition = (json['condition'] != null) ? json['condition'] : "" ,
+		ownedBy = (json['ownedBy'] != null) ? json['ownedBy'] : "",
+		muni = (json['muni'] != null) ? json['muni'] : "",
+		locDesc = (json['locDesc'] != null) ? json['locDesc'] : "";
+		var accDia = Number(json['accDia']);
+        if (accDia != "") {
+	        var accDiaFt = Math.floor(accDia);
+	        var accDiaIn = ((accDia - accDiaFt) * 12).toFixed(0);
+        } else {
+	        var accDiaFt = 0;
+	        var accDiaIn = 0;
+        }
+        accDia = accDiaFt + ' (ft) ' + accDiaIn + ' (in)';
+        var accType = (json['accType'] != null) ? json['accType'] : "",
+        	groundType = (json['groundType'] != null) ? json['groundType'] : "";
+        var hpe = Number(json['hpe']);
+        if (hpe != "") {
+	        var hpeFt = Math.floor(hpe);
+	        var hpeIn = ((hpe - hpeFt) * 12).toFixed(0);
+        } else {
+	        var hpeFt = 0;
+	        var hpeIn = 0;
+        }
+        hpe = hpeFt	+ ' (ft) ' + hpeIn + ' (in)';
+        var rimEl = Number(json['rimEl']);
+        if (rimEl != "") {
+	        var rimElFt = Math.floor(rimEl);
+	        var rimElIn = ((rimEl - rimElFt) * 12).toFixed(0);
+        } else {
+	        var rimElFt = 0;
+	        var rimElIn = 0;
+        }
+        rimEl = rimElFt	+ ' (ft) ' + rimElIn + ' (in)';
+        var inverEl = Number(json['inverEl']);
+        if (inverEl != "") {
+	        var inverElFt = Math.floor(inverEl);
+	        var inverElIn = ((inverEl - inverElFt) * 12).toFixed(0);
+        } else {
+	        var inverElFt = 0;
+	        var inverElIn = 0;
+        }
+        inverEl = inverElFt	+ ' (ft) ' + inverElIn + ' (in)';
+        var interDrop = Number(json['interDrop']);
+        if (interDrop != "") {
+	        var interDropFt = Math.floor(interDrop);
+	        var interDropIn = ((interDrop - interDropFt) * 12).toFixed(0);
+        } else {
+	        var interDropFt = 0;interDrop
+	        var interDropIn = 0;
+        }
+        interDrop = interDropFt	+ ' (ft) ' + interDropIn + ' (in)';
+        var manholeDrop = (json['manholeDrop'] != null) ? json['manholeDrop'] : "",
+        	wallMat = (json['wallMat'] != null) ? json['wallMat'] : "",
+        	structShape = (json['structShape'] != null) ? json['structShape'] : "",
+        	manholeType = (json['manholeType'] != null) ? json['manholeType'] : "",
+        	metered = (json['metered'] != null) ? json['metered'] : "";
+        	if (metered == 0 || metered == 'False') {
+        		metered = "False";
+        		var mv = "0";
+        	} else if (metered == 1 || metered == 'True') {
+        		metered = "True";
+        		var mv = "1";
+
+        	} else {
+        		metered = "";
+        	}
+        var comments = (json['comments'] != null) ? json['comments'] : "",
+
+	    cont = '<div>' +
+	    			'<p><b>Manhole ID#: </b>' + mid + ' </p>' +
+	    			'<p><b>Address: </b>'+address+'</p>' +
+	    			'<p><b>Top Rim Elevation: </b>'+topRimEl+'</p>' +
+	    			'<p><b>Condition: </b>'+condition+'</p>' +
+	    			'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+	    			'<p><b>Municipality: </b>'+muni+'</p>' +
+	    			'<p><b>Location Description: </b>'+locDesc+'</p>' +
+	    			'<p><b>Access Diameter: </b>'+accDia+'</p>' +
+	    			'<p><b>Access Type: </b>'+accType+'</p>' +
+	    			'<p><b>Gorund Type: </b>'+groundType+'</p>' +
+	    			'<p><b>High Pipe Elevation: </b>'+hpe+'</p>' +
+	    			'<p><b>Rim Elevation: </b>'+rimEl+'</p>' +
+	    			'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+	    			'<p><b>Manhole Drop: </b>'+manholeDrop+'</p>' +
+	    			'<p><b>Interior Drop: </b>'+interDrop+'</p>' +
+	    			'<p><b>Wall Material: </b>'+wallMat+'</p>' +
+	    			'<p><b>Structural Shape: </b>'+structShape+'</p>' +
+	    			'<p><b>Manhole Type: </b>'+manholeType+'</p>' +
+	    			'<p><b>Metered: </b>'+metered+'</p>' +
+	    			'<p><b>Comments: </b><p>'+comments+'</p></p>' +
+
+	    	   '</div>';
+
+    popup.setTitle("Selected Storm Water Manhole");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+}
+function basinPopInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		address = (json['address'] != null) ? json['address'] : "",
+		length = (json['length'] != null) ? json['length'] : 0,
+		width = (json['width'] != null) ? json['width'] : 0,
+		depth = (json['depth'] != null) ? json['depth'] : 0,
+		size = (json['size'] != null) ? json['size'] : 0;
+	var line_size = Number(json['line_size']);
+         if (line_size != "") {
+         	var line_sizeFt = Math.floor(line_size);
+         	var line_sizeIn = ((line_size - line_sizeFt) * 12).toFixed(0);
+         } else {
+         	var line_sizeFt = 0;
+         	var line_sizeIn = 0;
+         }
+    line_size = line_sizeFt + " (ft) " + line_sizeIn + " (in)";
+    var drains = (json['drains_to'] != null) ? json['drains_to'] : "",
+    	condition = (json['condition'] != null) ? json['condition'] : "";
+    	ownedBy = (json['ownedBy'] != null) ? json['ownedBy'] : "",
+        muni = (json['muni'] != null) ? json['muni'] : "",
+        locDesc = json['locDesc'],
+        cbType = json['CBType'];
+    var rimEl = Number(json['rimEl']);
+    if (rimEl != "") {
+    	var rimElFt = Math.floor(rimEl);
+    	var rimElIn = ((rimEl - rimElFt) * 12).toFixed(0);
+    } else {
+     	var rimElFt = 0;
+     	var rimElIn = 0;
+    }
+    rimEl = rimElFt + " (ft) " + rimElIn + " (in)";
+    var accDia = Number(json['accDia']);
+    if (accDia != "") {
+     	var accDiaFt = Math.floor(accDia);
+     	var accDiaIn = ((accDia - accDiaFt) * 12).toFixed(0);
+    } else {
+     	var accDiaFt = 0;
+     	var accDiaIn = 0;
+    }
+    accDia = accDiaFt + " (ft) " + accDiaIn + " (in)";  
+    var accMat = (json['accMat'] != null) ? json['accMat'] : "";
+    var accType = (json['accType'] != null) ? json['accType'] : "";
+    var inverEl = Number(json['inverEl']);
+    if (inverEl != "") {
+    	var inverElFt = Math.floor(inverEl);
+    	var inverElIn = ((inverEl - inverElFt) * 12).toFixed(0);
+    } else {
+     	var inverElFt = 0;
+     	var inverElIn = 0;
+    }
+    inverEl = inverElFt + " (ft) " + inverElIn + " (in)";
+    var comments = json['comments'];
+    
+    var cont = '<div>' +
+    				'<p><b>Basin ID#: </b> '+ json['basin#'] +'</p>' + 
+    				'<p><b>Address: </b>'+ address + '</p>' + 
+    				'<p><b>Volume : </b>'+ size + ' (ft&sup3;)</p>' + 
+    				'<p><b>Line Size Connection: </b>' + line_size + '</p>' +
+    				'<p><b>Drain\'s To: </b>' + drains + '</p>' +
+    				'<p><b>Condition: </b>'+ condition +'</p>' + 
+    				'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+    				'<p><b>Municipality: </b>'+muni+'</p>' +
+    				'<p><b>Location Description: </b>'+locDesc+'</p>' +
+    				'<p><b>CB Type: </b>'+cbType+'</p>' +
+    				'<p><b>Top of Structure: </b>'+rimEl+'</p>' +
+    				'<p><b>Diameter: </b>'+accDia+'</p>' +
+    				'<p><b>Access Material: </b>'+accMat+'</p>' +
+    				'<p><b>Access Type: </b>'+accType+'</p>' +
+    				'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+    				'<p><b>Comments: </b><p>'+comments+'</p></p>' +
+    		   '</div>';
+    popup.setTitle("Selected Catchbasin");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+
+
+}
+function f_map_click_handler(map,evt_click) {
 	"use strict";
 	switch (tool_selected) {
 	case "parcel":
@@ -1433,6 +1701,9 @@ function f_map_click_handler(evt_click) {
 		break;
 	case "identify":
 		f_map_identify_exec(evt_click);
+		break;
+	case "utility":
+		f_map_util_exec(map, evt_click);
 		break;
 	case "ERIS_Identify":
 		f_ERIS_selection_exec(evt_click);
@@ -2070,6 +2341,11 @@ function f_load_tools() {
 				tool_selected = "identify";
 				f_button_clicked("identify");
 			});
+			document.getElementById("utility").addEventListener("click", function () {
+				navToolbar.activate(Navigation.PAN);
+				tool_selected = "utility";
+				f_button_clicked("utility");
+			});
 			document.getElementById("parcel").addEventListener("click", function () {
 				f_button_clicked("parcel");
 				navToolbar.activate(Navigation.PAN);
@@ -2446,7 +2722,7 @@ function f_query_owner_int_exec(ownerid) {
 			locateButton.startup();
 		}
 		on(M_meri, "click", function (e) {
-			f_map_click_handler(e);
+			f_map_click_handler(this,e);
 		});
 		on.once(M_meri, "load", function () {
 			LD_flooding.setDPI(72, false);
