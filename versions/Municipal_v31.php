@@ -19,6 +19,15 @@
 <?php if ($_SESSION['isMobile']): ?>
 		<link rel="stylesheet" href="css/mobile.css">
 <?php endif ?>
+<script>
+<?php if($_SESSION['isMobile']): ?>
+	var ismobile = true;
+	console.log(ismobile);
+<?php else: ?>
+	var ismobile = false;
+	console.log(ismobile);
+<?php endif ?>
+</script>
 		<link rel="icon" type="image/ico" href="css/img/favicon.ico">
 		<link rel="apple-touch-icon" href="css/img/map-logo-57x57.png">
 		<link rel="apple-touch-icon" sizes="72x72" href="css/img/map-logo-72x72.png">
@@ -41,6 +50,12 @@
 		</script>
 	</head>
 	<body>
+	<div>	
+		<div id="pop" class="mypop">
+		  <div style="height: 30px"><div id="selTitle" style="float: left;"></div><button type="button" id="xout" style="float: right"><b>X</b></button></div>
+		  <div id="popcon"></div>
+		</div>
+	</div>
 		<noscript>Sorry, but in order to use Municipal Map you need JavaScript enabled</noscript>
 		<div id = "body">
 			<div class="header-container" style="display:none">
@@ -551,6 +566,7 @@
 		</div>
 		<script src="http://js.arcgis.com/3.9compact/init.js"></script>
 		<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="js/main.js"></script>
 <?php if ($_SESSION['isERIS']): ?>
 		<script  src="js/ERIS.js"></script>

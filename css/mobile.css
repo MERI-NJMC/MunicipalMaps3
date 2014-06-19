@@ -13,6 +13,18 @@ body
 {
 	font-size: 20px;
 }
+.mypop {
+	z-index: 100;
+	position: fixed;
+	visibility: hidden;
+	padding: 10px;
+	width: 100%;
+	height: 100%;
+	background: #FFFFFF;
+	overflow-y: auto;
+		
+	border-radius: 15px; 
+}
 .active > ul
 {
 	padding: 5px;

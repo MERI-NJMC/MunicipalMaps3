@@ -1473,6 +1473,7 @@ function sgmInfo(map,evt,json) {
 		usi = (json['usi'] != "Null") ? json['usi'] : "",
 		dsi = (json['dsi'] != "Null") ? json['dsi'] : "",
 		comments = (json['comments'] != "Null") ? json['comments'] : "",
+		next_arrow = document.getElementsByClassName("titleButton arrow")[0],
 	
 	cont = '<div>' + 
 				'<p><b>Manhole ID#: </b>'+sgmid+'</p>' +
@@ -1490,10 +1491,21 @@ function sgmInfo(map,evt,json) {
 				'<p><b>Comments: </b>'+comments+'</p>' +
 		   '</div>';
 
-	popup.setTitle("Selected Sanitary Line");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+	if(!ismobile) {
+		popup.setTitle("Selected Sanitary Line");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Sanitary Line");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
+
+
 }
 function smInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1531,10 +1543,19 @@ function smInfo(map,evt,json) {
 
 		   '</div>';
 
-	popup.setTitle("Selected Sanitary Manhole");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+	if(!ismobile) {
+		popup.setTitle("Selected Sanitary Manhole");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Sanitary Manhole");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 }
 function hydrantInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1558,10 +1579,19 @@ function hydrantInfo(map,evt,json) {
 				'<p><b>Comments: </b><p>' +comments+'</p></p>' +
 		   '</div>';
 
-	popup.setTitle("Selected Fire Hydrant");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+	if(!ismobile) {
+		popup.setTitle("Selected Fire Hydrant");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Fire Hydrant");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 }
 function slineInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1586,10 +1616,19 @@ function slineInfo(map,evt,json) {
 					'<p><b>Upstream Invert: </b>'+usi+'</p>' +
 					'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
 			   '</div>';
-	popup.setTitle("Selected Storm Water Line");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+	if(!ismobile) {
+		popup.setTitle("Selected Stomr Water Line");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Stomr Water Line");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 } 
 function outfallInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1619,10 +1658,19 @@ function outfallInfo(map,evt,json) {
  					'<p><b>Diameter: </b>'+dia+'</p>' +
  					'<p><b>Comments: </b><p>'+comments+'</p></p>' +
  			   '</div>';
- 	popup.setTitle("Selected Outfall");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+ 	if(!ismobile) {
+		popup.setTitle("Selected Outfall");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Outfall");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 }
 function swManholeInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1721,10 +1769,19 @@ function swManholeInfo(map,evt,json) {
 
 	    	   '</div>';
 
-    popup.setTitle("Selected Storm Water Manhole");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+    if(!ismobile) {
+		popup.setTitle("Selected Storm Water Manhole");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Storm Water Manhole");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 }
 function basinPopInfo(map,evt,json) {
 	var popup = map.infoWindow,
@@ -1797,10 +1854,19 @@ function basinPopInfo(map,evt,json) {
     				'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
     				'<p><b>Comments: </b><p>'+comments+'</p></p>' +
     		   '</div>';
-    popup.setTitle("Selected Catchbasin");
- 	popup.setContent(cont);
-    popup.resize(300,500);
-    popup.show(evt.mapPoint);
+    if(!ismobile) {
+		popup.setTitle("Selected Catchbasin");
+	 	popup.setContent(cont);
+	    popup.resize(300,500);
+	    popup.show(evt.mapPoint);
+	} else {
+		console.log("mobile");
+		$("#popcon").html(cont);
+		$("#selTitle").html("Selected Catchbasin");
+		var pop = document.getElementById("pop");
+		pop.style.visibility='visible';
+
+	}
 
 
 }
@@ -2865,3 +2931,10 @@ function f_query_owner_int_exec(ownerid) {
 		});
 	});
 }());
+$(document).ready(function() {
+	$("#xout").click(function() {
+		var pop = document.getElementById("pop");
+        pop.style.visibility='hidden';
+	});
+
+});
