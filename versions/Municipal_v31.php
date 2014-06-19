@@ -51,7 +51,7 @@
 	</head>
 	<body>
 	<div>	
-		<div id="pop" class="mypop">
+		<div id="pop" class="mypop" style="visibility: none">
 		  <div style="height: 30px"><div id="selTitle" style="float: left;"></div><button type="button" id="xout" style="float: right"><b>X</b></button></div>
 		  <div id="popcon"></div>
 		</div>
