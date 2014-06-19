@@ -126,6 +126,7 @@
 				
 			
 				echo json_encode($json);
+				break;
 				
 			} else if($layer->layerName == "Storm Water Manhole") { 
 				$manhole = $layer->attributes;
@@ -247,6 +248,7 @@
 
 
 				echo json_encode($json);
+				break;
 			} else if($layer->layerName == "Outfall") {
 				$outfall = $layer->attributes;
 				$query = "SELECT * from `outfall_attributes` WHERE `facilityid` ='".mysqli_real_escape_string($mysqli, $outfall->FacilityID)."'";
@@ -300,6 +302,7 @@
 				}
 
 				echo json_encode($json);
+				break;
 			} else if($layer->layerName == "Storm Water Gravity Main") {
 				$sline = $layer->attributes;
 				$query = "SELECT * from `stormline_attributes` WHERE `FacilityID` ='".mysqli_real_escape_string($mysqli, $sline->FacilityID)."'";
@@ -364,6 +367,59 @@
 				} 
 
 				echo json_encode($json);
+				break;
+			} else if ($layer->layerName == "Fire Hydrant") {
+				$hydrant = $layer->attributes;
+				$json['layer'] = "Fire Hydrant";
+				$json['hid'] = $hydrant->FacilityID;
+				$json['ownedBy'] = $hydrant->OwnedBy;
+				$json['mainBy'] = $hydrant->MaintainedBy;
+				$json['muni'] = $hydrant->Municipality;
+				$json['loc'] = $hydrant->Location;
+				$json['css'] = $hydrant->CrossSectionShape;
+				$json['pipeDia'] = $hydrant->PipeDiameter;
+				$json['comments'] = $hydrant->Comments;
+				echo json_encode($json);
+				break;
+			} else if ($layer->layerName == "Sanitary Manhole") {
+				$sm = $layer->attributes;
+				$json['layer'] = $layer->layerName;
+				$json['smid'] = $sm->FacilityID;
+				$json['ownedBy'] = $sm->OwnedBy;
+				$json['mainBy'] = $sm->MaintainedBy;
+				$json['muni'] = $sm->Municipality;
+				$json['waterType'] = $sm->WaterType;
+				$json['locDesc'] = $sm->LocationDescription;
+				$json['accDia'] = $sm->AccessDiameter;
+				$json['hpe'] = $sm->HighPipeElevation;
+				$json['rimEl'] = $sm->RimElevation;
+				$json['manholeDrop'] = $sm->ManholeDrop;
+				$json['interDrop'] = $sm->InteriorDrop;
+				$json['wallMat'] = $sm->WallMaterial;
+				$json['manholeType'] = $sm->ManholeType;
+				$json['inverEl'] = $sm->InvertElevation;
+				$json['comments'] = $sm->Comments;
+
+				echo json_encode($json);
+				break;
+			} else if ($layer->layerName == "Sanitary Gravity Main") {
+				$sgm = $layer->attributes;
+				$json['layer'] = $layer->layerName;
+				$json['smid'] = $sgm->FacilityID;
+				$json['ownedBy'] = $sgm->OwnedBy;
+				$json['mainBy'] = $sgm->MaintainedBy;
+				$json['muni'] = $sgm->Municipality;
+				$json['waterType'] = $sgm->WaterType;
+				$json['mat'] = $sgm->Material;
+				$json['pipeClass'] = $sgm->PipeClass;
+				$json['dia'] = $sgm->Diameter;
+				$json['height'] = $sgm->Height;
+				$json['width'] = $sgm->Width;
+				$json['usi'] = $sgm->UpstreamInvert;
+				$json['dsi'] = $sgm->DownstreamInvert;
+				$json['comments'] = $sgm->Comments;
+				echo json_encode($json);
+				break;
 			}
 
 		}

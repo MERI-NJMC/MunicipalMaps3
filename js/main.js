@@ -1446,11 +1446,122 @@ function f_map_util_exec(map, evt) {
                     	outfallInfo(map,evt,json);
                     } else if(json['layer'] == "Storm Water Gravity Main") {
                     	slineInfo(map,evt,json);
+                    } else if (json['layer'] == "Fire Hydrant") {
+                    	hydrantInfo(map,evt,json);
+                    } else if (json['layer'] == "Sanitary Manhole") {
+                    	smInfo(map,evt,json);
+                    } else if (json['layer'] == "Sanitary Gravity Main") {
+                    	sgmInfo(map,evt,json);
                     }
                     
                    	                 
                 }
             }
+}
+function sgmInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		sgmid = (json['smid'] != "Null") ? json['sgmid'] : "",
+		ownedBy = (json['ownedBy'] != "Null") ? json['ownedBy'] : "",
+		mainBy = (json['mainBy'] != "Null") ? json['mainBy'] : "",
+		muni = (json['muni'] != "Null") ? json['muni'] : "",
+		waterType = (json['waterType'] != "Null") ? json['waterType'] : "",
+		mat = (json['mat'] != "Null") ? json['mat'] : "",
+		pipeClass = (json['pipeClass'] != "Null") ? json['pipeClass'] : "",
+		dia = (json['dia'] != "Null") ? json['dia'] : "",
+		height = (json['height'] != "Null") ? json['height'] : "",
+		width = (json['width'] != "Null") ? json['width'] : "",
+		usi = (json['usi'] != "Null") ? json['usi'] : "",
+		dsi = (json['dsi'] != "Null") ? json['dsi'] : "",
+		comments = (json['comments'] != "Null") ? json['comments'] : "",
+	
+	cont = '<div>' + 
+				'<p><b>Manhole ID#: </b>'+sgmid+'</p>' +
+				'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+				'<p><b>Maintained By: </b>'+mainBy+'</p>' +
+				'<p><b>Municipality: </b>'+muni+'</p>' +
+				'<p><b>Water Type: </b>'+waterType+'</p>' +
+				'<p><b>Material: </b>'+mat+'</p>' +
+				'<p><b>Pipe Class: </b>'+pipeClass+'</p>' +
+				'<p><b>Diameter: </b>'+dia+'</p>' +
+				'<p><b>Height: </b>'+height+'</p>' +
+				'<p><b>Width: </b>'+width+'</p>' +
+				'<p><b>Upstream Invert: </b>'+usi+'</p>' +
+				'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
+				'<p><b>Comments: </b>'+comments+'</p>' +
+		   '</div>';
+
+	popup.setTitle("Selected Sanitary Line");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+}
+function smInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		smid = (json['smid'] != "Null") ? json['smid'] : "",
+		ownedBy = (json['ownedBy'] != "Null") ? json['ownedBy'] : "",
+		mainBy = (json['mainBy'] != "Null") ? json['mainBy'] : "",
+		muni = (json['muni'] != "Null") ? json['muni'] : "",
+		waterType = (json['waterType'] != "Null") ? json['waterType'] : "",
+		locDesc = (json['locDesc'] != "Null") ? json['locDesc'] : "",
+		accDia = (json['accDia'] != "Null") ? json['accDia'] : "",
+		hpe = (json['hpe'] != "Null") ? json['hpe'] : "",
+		rimEl = (json['rimEl'] != "Null") ? json['rimEl'] : "",
+		manholeDrop = (json['manholeDrop'] != "Null") ? json['manholeDrop'] : "",
+		interDrop = (json['interDrop'] != "Null") ? json['interDrop'] : "",
+		wallMat = (json['wallMat'] != "Null") ? json['wallMat'] : "",
+		manholeType = (json['manholeType'] != "Null") ? json['manholeType'] : "",
+		inverEl = (json['inverEl'] != "Null") ? json['inverEl'] : "",
+		comments = (json['comments'] != "Null") ? json['comments'] : "",
+
+	cont = '<div>' + 
+				'<p><b>Manhole ID#: </b>'+smid+'</p>' +
+				'<p><b>Owned By: </b>'+ownedBy+'</p>' +
+				'<p><b>Maintained By: </b>'+mainBy+'</p>' +
+				'<p><b>Municipality: </b>'+muni+'</p>' +
+				'<p><b>Water Type: </b>'+waterType+'</p>' +
+				'<p><b>Location Description: </b>'+locDesc+'</p>' +
+				'<p><b>Access Diameter: </b>'+accDia+'</p>' +
+				'<p><b>High Pipe Elevation: </b>'+hpe+'</p>' +
+				'<p><b>Rim Elevation: </b>'+rimEl+'</p>' +
+				'<p><b>Manhole Drop: </b>'+manholeDrop+'</p>' +
+				'<p><b>Wall Material: </b>'+wallMat+'</p>' +
+				'<p><b>Manhole Type: </b>'+manholeType+'</p>' +
+				'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+				'<p><b>Comments: </b><p>'+comments+'</p></p>' +
+
+		   '</div>';
+
+	popup.setTitle("Selected Sanitary Manhole");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
+}
+function hydrantInfo(map,evt,json) {
+	var popup = map.infoWindow,
+		hid = (json['hid'] != "Null") ? json['hid'] : "",
+		ownedBy = (json['ownedBy'] != "Null") ? json['ownedBy'] : "",
+		mainBy = (json['mainBy'] != "Null") ? json['mainBy'] : "",
+		muni = (json['muni'] != "Null") ? json['muni'] : "",
+		loc = (json['loc'] != "Null") ? json['loc'] : "",
+		css = (json['css'] != null) ? json['css'] : "",
+		pipeDia = (json['pipeDia'] != "Null") ? json['pipeDia'] : "",
+		comments = (json['comments'] != "Null") ? json['comments'] : "",
+
+	cont = '<div>' + 
+				'<p><b>Hydrant ID#: </b>'+hid+'</p>' + 
+				'<p><b>Owned By: </b>' +ownedBy+'</p>' +
+				'<p><b>Maintained By: </b>' +mainBy+'</p>' +
+				'<p><b>Municipality: </b>' +muni+'</p>' +
+				'<p><b>Location: </b>' +loc+'</p>' +
+				'<p><b>Cross Section Shape: </b>' +css+'</p>' +
+				'<p><b>Pipe Diameter: </b>' +pipeDia+'</p>' +
+				'<p><b>Comments: </b><p>' +comments+'</p></p>' +
+		   '</div>';
+
+	popup.setTitle("Selected Fire Hydrant");
+ 	popup.setContent(cont);
+    popup.resize(300,500);
+    popup.show(evt.mapPoint);
 }
 function slineInfo(map,evt,json) {
 	var popup = map.infoWindow,
