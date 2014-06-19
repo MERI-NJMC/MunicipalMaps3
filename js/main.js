@@ -1617,14 +1617,14 @@ function slineInfo(map,evt,json) {
 					'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
 			   '</div>';
 	if(!ismobile) {
-		popup.setTitle("Selected Stomr Water Line");
+		popup.setTitle("Selected Storm Water Line");
 	 	popup.setContent(cont);
 	    popup.resize(300,500);
 	    popup.show(evt.mapPoint);
 	} else {
 		console.log("mobile");
 		$("#popcon").html(cont);
-		$("#selTitle").html("Selected Stomr Water Line");
+		$("#selTitle").html("Selected Storm Water Line");
 		var pop = document.getElementById("pop");
 		pop.style.visibility='visible';
 
