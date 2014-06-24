@@ -1382,30 +1382,26 @@ function f_map_identify_exec(click_evt) {
 		IP_Map_All.layerIds = IP_Identify_Layers;
 		tool_selected = "pan";
 		IT_Map_All.execute(IP_Map_All, function (identifyResults) {
-			var e_table = document.createElement("table"),
-				e_tbody = document.createElement("tbody"),
+			var	e_div = document.createElement("div"),
 				identifyResult,
 				attr,
 				string_array,
 				lstring,
 				rstring;
-			e_table.className = "attrTable ident_table";
-			e_table.cellSpacing = "0";
-			e_table.cellPadding = "0";
-			el_popup_view.appendChild(e_table);
-			e_table.appendChild(e_tbody);
+			el_popup_view.appendChild(e_div);
 			for (index1 = 0; index1 < identifyResults.length; index1 += 1) {
 				identifyResult = identifyResults[index1];
 				string_array = identifyResult.layerName.toLowerCase();
-				lstring = string_array.substr(0, Math.round(string_array.length/2));
-				rstring = string_array.substr(Math.round(string_array.length/2), string_array.length);
-				e_tbody.innerHTML += '<tr><td class="attrName" style="text-transform:capitalize;text-align:right;padding-right: 0px;">' + lstring + '</td><td class="attrName" style="padding-left:0;">' + rstring + '</td></tr>';
-				for (index2 = 0; index2 < identify_fields_json[identifyResult.layerId].length; index2 += 1) {
-					attr = identify_fields_json[identifyResult.layerId][index2];
-					if (identifyResult.feature.attributes[attr] !== "Null" && identifyResult.feature.attributes[attr] !== null && identifyResult.feature.attributes[attr] !== "" && identifyResult.feature.attributes[attr] !== undefined) {
-						e_tbody.innerHTML += '<tr><td class="attrName">' + fieldAlias(attr) + ': </td><td class="attrValue">' + identifyResult.feature.attributes[attr] + '</td></tr>';
+				if (string_array != "land use" && string_array != "zoning") {
+					e_div.innerHTML += '<p class="attrName" style="text-transform:capitalize;"><b>' + string_array + '</b></p>';
+					for (index2 = 0; index2 < identify_fields_json[identifyResult.layerId].length; index2 += 1) {
+						attr = identify_fields_json[identifyResult.layerId][index2];
+						if (identifyResult.feature.attributes[attr] !== "Null" && identifyResult.feature.attributes[attr] !== null && identifyResult.feature.attributes[attr] !== "" && identifyResult.feature.attributes[attr] !== undefined && fieldAlias(attr) !== "SFHA_TF") {
+							e_div.innerHTML += '<p>' + fieldAlias(attr) + ': ' + identifyResult.feature.attributes[attr] + '</p>';
+						}
 					}
 				}
+				
 			}
 			M_meri.infoWindow.clearFeatures();
 			M_meri.infoWindow.setTitle("Selected Property");
@@ -1755,7 +1751,7 @@ function swManholeInfo(map,evt,json) {
 	    			'<p><b>Location Description: </b>'+locDesc+'</p>' +
 	    			'<p><b>Access Diameter: </b>'+accDia+'</p>' +
 	    			'<p><b>Access Type: </b>'+accType+'</p>' +
-	    			'<p><b>Gorund Type: </b>'+groundType+'</p>' +
+	    			'<p><b>Ground Type: </b>'+groundType+'</p>' +
 	    			'<p><b>High Pipe Elevation: </b>'+hpe+'</p>' +
 	    			'<p><b>Rim Elevation: </b>'+rimEl+'</p>' +
 	    			'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
@@ -1841,7 +1837,7 @@ function basinPopInfo(map,evt,json) {
     				'<p><b>Address: </b>'+ address + '</p>' + 
     				'<p><b>Volume : </b>'+ size + ' (ft&sup3;)</p>' + 
     				'<p><b>Line Size Connection: </b>' + line_size + '</p>' +
-    				'<p><b>Drain\'s To: </b>' + drains + '</p>' +
+    				'<p><b>Drains To: </b>' + drains + '</p>' +
     				'<p><b>Condition: </b>'+ condition +'</p>' + 
     				'<p><b>Owned By: </b>'+ownedBy+'</p>' +
     				'<p><b>Municipality: </b>'+muni+'</p>' +
