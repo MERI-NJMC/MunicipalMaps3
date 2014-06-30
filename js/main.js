@@ -1479,11 +1479,11 @@ function sgmInfo(map,evt,json) {
 				'<p><b>Water Type: </b>'+waterType+'</p>' +
 				'<p><b>Material: </b>'+mat+'</p>' +
 				'<p><b>Pipe Class: </b>'+pipeClass+'</p>' +
-				'<p><b>Diameter: </b>'+dia+'</p>' +
-				'<p><b>Height: </b>'+height+'</p>' +
-				'<p><b>Width: </b>'+width+'</p>' +
-				'<p><b>Upstream Invert: </b>'+usi+'</p>' +
-				'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
+				'<p><b>Diameter: </b>'+dia+' (in)</p>' +
+				'<p><b>Height: </b>'+height+' (in)</p>' +
+				'<p><b>Width: </b>'+width+' (in)</p>' +
+				'<p><b>Upstream Invert: </b>'+usi+' (ft)</p>' +
+				'<p><b>Downstream Invert: </b>'+dsi+' (ft)</p>' +
 				'<p><b>Comments: </b>'+comments+'</p>' +
 		   '</div>';
 
@@ -1528,13 +1528,14 @@ function smInfo(map,evt,json) {
 				'<p><b>Municipality: </b>'+muni+'</p>' +
 				'<p><b>Water Type: </b>'+waterType+'</p>' +
 				'<p><b>Location Description: </b>'+locDesc+'</p>' +
-				'<p><b>Access Diameter: </b>'+accDia+'</p>' +
-				'<p><b>High Pipe Elevation: </b>'+hpe+'</p>' +
-				'<p><b>Rim Elevation: </b>'+rimEl+'</p>' +
-				'<p><b>Manhole Drop: </b>'+manholeDrop+'</p>' +
+				'<p><b>Access Diameter: </b>'+accDia+' (in)</p>' +
+				'<p><b>High Pipe Elevation: </b>'+hpe+' (ft)</p>' +
+				'<p><b>Rim Elevation: </b>'+rimEl+' (ft)</p>' +
+				'<p><b>Manhole Drop: </b>'+manholeDrop+' </p>' +
+				'<p><b>Interior Drop: </b>'+interDrop+' (in)</p>' +
 				'<p><b>Wall Material: </b>'+wallMat+'</p>' +
 				'<p><b>Manhole Type: </b>'+manholeType+'</p>' +
-				'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+				'<p><b>Invert Elevation: </b>'+inverEl+' (ft)</p>' +
 				'<p><b>Comments: </b><p>'+comments+'</p></p>' +
 
 		   '</div>';
@@ -1571,7 +1572,7 @@ function hydrantInfo(map,evt,json) {
 				'<p><b>Municipality: </b>' +muni+'</p>' +
 				'<p><b>Location: </b>' +loc+'</p>' +
 				'<p><b>Cross Section Shape: </b>' +css+'</p>' +
-				'<p><b>Pipe Diameter: </b>' +pipeDia+'</p>' +
+				'<p><b>Pipe Diameter: </b>' +pipeDia+' (in)</p>' +
 				'<p><b>Comments: </b><p>' +comments+'</p></p>' +
 		   '</div>';
 
@@ -1607,10 +1608,11 @@ function slineInfo(map,evt,json) {
 					'<p><b>Municipality: </b>'+muni+'</p>' +
 					'<p><b>Material: </b>'+material+'</p>' +
 					'<p><b>Cross Section Shape: </b>'+css+'</p>' +
-					'<p><b>Height: </b>'+height+'</p>' +
-					'<p><b>Width: </b>'+width+'</p>' +
-					'<p><b>Upstream Invert: </b>'+usi+'</p>' +
-					'<p><b>Downstream Invert: </b>'+dsi+'</p>' +
+					'<p><b>Diameter: </b>'+dia+' (in)</p>'+
+					'<p><b>Height: </b>'+height+' (in)</p>' +
+					'<p><b>Width: </b>'+width+' (in)</p>' +
+					'<p><b>Upstream Invert: </b>'+usi+' (ft)</p>' +
+					'<p><b>Downstream Invert: </b>'+dsi+' (ft)</p>' +
 			   '</div>';
 	if(!ismobile) {
 		popup.setTitle("Selected Storm Water Line");
@@ -1634,15 +1636,7 @@ function outfallInfo(map,evt,json) {
 		material = (json['material'] != "Null") ? json['material'] : "",
 		recWater = (json['recWater'] != "Null") ? json['recWater'] : "",
 		comments = (json['comments'] != "Null") ? json['comments'] : "";
-	var dia = (json['dia'] != "Null") ? Number(json['dia']) : -1;
- 	if (dia != -1) {
- 		var diaFt = Math.floor(dia);
- 		var diaIn = ((dia - diaFt) * 12).toFixed(0);
- 	} else {
- 		var diaFt = 0;
- 		var diaIn = 0;
- 	} 
- 	dia = diaFt + ' (ft) ' + diaIn + ' (in)'; 
+	var dia = (json['dia'] != "Null") ? Number(json['dia']) : "";
 
  	var cont = '<div>' + 
  					'<p><b>Outfall ID#: </b>'+json['oid']+'</p>' +
@@ -1651,7 +1645,7 @@ function outfallInfo(map,evt,json) {
  					'<p><b>Location Description: </b>'+locDesc+'</p>' +
  					'<p><b>Material: </b>'+material+'</p>' +
  					'<p><b>Receiving Water: </b>'+recWater+'</p>' +
- 					'<p><b>Diameter: </b>'+dia+'</p>' +
+ 					'<p><b>Diameter: </b>'+dia+' (in)</p>' +
  					'<p><b>Comments: </b><p>'+comments+'</p></p>' +
  			   '</div>';
  	if(!ismobile) {
@@ -1676,87 +1670,46 @@ function swManholeInfo(map,evt,json) {
 		condition = (json['condition'] != null) ? json['condition'] : "" ,
 		ownedBy = (json['ownedBy'] != null) ? json['ownedBy'] : "",
 		muni = (json['muni'] != null) ? json['muni'] : "",
-		locDesc = (json['locDesc'] != null) ? json['locDesc'] : "";
-		var accDia = Number(json['accDia']);
-        if (accDia != "") {
-	        var accDiaFt = Math.floor(accDia);
-	        var accDiaIn = ((accDia - accDiaFt) * 12).toFixed(0);
-        } else {
-	        var accDiaFt = 0;
-	        var accDiaIn = 0;
-        }
-        accDia = accDiaFt + ' (ft) ' + accDiaIn + ' (in)';
-        var accType = (json['accType'] != null) ? json['accType'] : "",
-        	groundType = (json['groundType'] != null) ? json['groundType'] : "";
-        var hpe = Number(json['hpe']);
-        if (hpe != "") {
-	        var hpeFt = Math.floor(hpe);
-	        var hpeIn = ((hpe - hpeFt) * 12).toFixed(0);
-        } else {
-	        var hpeFt = 0;
-	        var hpeIn = 0;
-        }
-        hpe = hpeFt	+ ' (ft) ' + hpeIn + ' (in)';
-        var rimEl = Number(json['rimEl']);
-        if (rimEl != "") {
-	        var rimElFt = Math.floor(rimEl);
-	        var rimElIn = ((rimEl - rimElFt) * 12).toFixed(0);
-        } else {
-	        var rimElFt = 0;
-	        var rimElIn = 0;
-        }
-        rimEl = rimElFt	+ ' (ft) ' + rimElIn + ' (in)';
-        var inverEl = Number(json['inverEl']);
-        if (inverEl != "") {
-	        var inverElFt = Math.floor(inverEl);
-	        var inverElIn = ((inverEl - inverElFt) * 12).toFixed(0);
-        } else {
-	        var inverElFt = 0;
-	        var inverElIn = 0;
-        }
-        inverEl = inverElFt	+ ' (ft) ' + inverElIn + ' (in)';
-        var interDrop = Number(json['interDrop']);
-        if (interDrop != "") {
-	        var interDropFt = Math.floor(interDrop);
-	        var interDropIn = ((interDrop - interDropFt) * 12).toFixed(0);
-        } else {
-	        var interDropFt = 0;interDrop
-	        var interDropIn = 0;
-        }
-        interDrop = interDropFt	+ ' (ft) ' + interDropIn + ' (in)';
-        var manholeDrop = (json['manholeDrop'] != null) ? json['manholeDrop'] : "",
-        	wallMat = (json['wallMat'] != null) ? json['wallMat'] : "",
-        	structShape = (json['structShape'] != null) ? json['structShape'] : "",
-        	manholeType = (json['manholeType'] != null) ? json['manholeType'] : "",
-        	metered = (json['metered'] != null) ? json['metered'] : "";
-        	if (metered == 0 || metered == 'False') {
-        		metered = "False";
-        		var mv = "0";
-        	} else if (metered == 1 || metered == 'True') {
-        		metered = "True";
-        		var mv = "1";
+		locDesc = (json['locDesc'] != null) ? json['locDesc'] : "",
+		accDia = (json['accDia'] != null) ? Number(json['accDia']) : "",
+		accType = (json['accType'] != null) ? json['accType'] : "",
+        groundType = (json['groundType'] != null) ? json['groundType'] : "",
+        hpe = (json['hpe'] != null) ? Number(json['hpe']) : "",
+        rimEl = (json['rimEl'] != null) ? Number(json['rimEl']) : "",
+        inverEl = (json['inverEl'] != null) ? Number(json['inverEl']) : "",
+        interDrop = (json['interDrop'] != null) ? Number(json['interDrop']) : "",
+        manholeDrop = (json['manholeDrop'] != null) ? json['manholeDrop'] : "",
+        wallMat = (json['wallMat'] != null) ? json['wallMat'] : "",
+        structShape = (json['structShape'] != null) ? json['structShape'] : "",
+        manholeType = (json['manholeType'] != null) ? json['manholeType'] : "",
+        metered = (json['metered'] != null) ? json['metered'] : "";
+    	if (metered == 0 || metered == 'False') {
+    		metered = "False";
+    		var mv = "0";
+    	} else if (metered == 1 || metered == 'True') {
+    		metered = "True";
+    		var mv = "1";
 
-        	} else {
-        		metered = "";
-        	}
+    	} else {
+    		metered = "";
+    	}
         var comments = (json['comments'] != null) ? json['comments'] : "",
 
 	    cont = '<div>' +
 	    			'<p><b>Manhole ID#: </b>' + mid + ' </p>' +
 	    			'<p><b>Address: </b>'+address+'</p>' +
-	    			'<p><b>Top Rim Elevation: </b>'+topRimEl+'</p>' +
+	    			'<p><b>Rim Elevation: </b>'+rimEl+' (ft)</p>' +
 	    			'<p><b>Condition: </b>'+condition+'</p>' +
 	    			'<p><b>Owned By: </b>'+ownedBy+'</p>' +
 	    			'<p><b>Municipality: </b>'+muni+'</p>' +
 	    			'<p><b>Location Description: </b>'+locDesc+'</p>' +
-	    			'<p><b>Access Diameter: </b>'+accDia+'</p>' +
+	    			'<p><b>Access Diameter: </b>'+accDia+' (in)</p>' +
 	    			'<p><b>Access Type: </b>'+accType+'</p>' +
 	    			'<p><b>Ground Type: </b>'+groundType+'</p>' +
-	    			'<p><b>High Pipe Elevation: </b>'+hpe+'</p>' +
-	    			'<p><b>Rim Elevation: </b>'+rimEl+'</p>' +
-	    			'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+	    			'<p><b>High Pipe Elevation: </b>'+hpe+' (ft)</p>' +
+	    			'<p><b>Invert Elevation: </b>'+inverEl+' (ft)</p>' +
 	    			'<p><b>Manhole Drop: </b>'+manholeDrop+'</p>' +
-	    			'<p><b>Interior Drop: </b>'+interDrop+'</p>' +
+	    			'<p><b>Interior Drop: </b>'+interDrop+' (in)</p>' +
 	    			'<p><b>Wall Material: </b>'+wallMat+'</p>' +
 	    			'<p><b>Structural Shape: </b>'+structShape+'</p>' +
 	    			'<p><b>Manhole Type: </b>'+manholeType+'</p>' +
@@ -1785,8 +1738,8 @@ function basinPopInfo(map,evt,json) {
 		length = (json['length'] != null) ? json['length'] : 0,
 		width = (json['width'] != null) ? json['width'] : 0,
 		depth = (json['depth'] != null) ? json['depth'] : 0,
-		size = (json['size'] != null) ? json['size'] : 0;
-	var line_size = Number(json['line_size']);
+		size = (json['size'] != null) ? json['size'] : 0,
+		line_size = Number(json['line_size']);
          if (line_size != "") {
          	var line_sizeFt = Math.floor(line_size);
          	var line_sizeIn = ((line_size - line_sizeFt) * 12).toFixed(0);
@@ -1794,43 +1747,19 @@ function basinPopInfo(map,evt,json) {
          	var line_sizeFt = 0;
          	var line_sizeIn = 0;
          }
-    line_size = line_sizeFt + " (ft) " + line_sizeIn + " (in)";
-    var drains = (json['drains_to'] != null) ? json['drains_to'] : "",
+    	line_size = line_sizeFt + " (ft) " + line_sizeIn + " (in)";
+	var	drains = (json['drains_to'] != null) ? json['drains_to'] : "",
     	condition = (json['condition'] != null) ? json['condition'] : "";
     	ownedBy = (json['ownedBy'] != null) ? json['ownedBy'] : "",
         muni = (json['muni'] != null) ? json['muni'] : "",
         locDesc = json['locDesc'],
-        cbType = json['CBType'];
-    var rimEl = Number(json['rimEl']);
-    if (rimEl != "") {
-    	var rimElFt = Math.floor(rimEl);
-    	var rimElIn = ((rimEl - rimElFt) * 12).toFixed(0);
-    } else {
-     	var rimElFt = 0;
-     	var rimElIn = 0;
-    }
-    rimEl = rimElFt + " (ft) " + rimElIn + " (in)";
-    var accDia = Number(json['accDia']);
-    if (accDia != "") {
-     	var accDiaFt = Math.floor(accDia);
-     	var accDiaIn = ((accDia - accDiaFt) * 12).toFixed(0);
-    } else {
-     	var accDiaFt = 0;
-     	var accDiaIn = 0;
-    }
-    accDia = accDiaFt + " (ft) " + accDiaIn + " (in)";  
-    var accMat = (json['accMat'] != null) ? json['accMat'] : "";
-    var accType = (json['accType'] != null) ? json['accType'] : "";
-    var inverEl = Number(json['inverEl']);
-    if (inverEl != "") {
-    	var inverElFt = Math.floor(inverEl);
-    	var inverElIn = ((inverEl - inverElFt) * 12).toFixed(0);
-    } else {
-     	var inverElFt = 0;
-     	var inverElIn = 0;
-    }
-    inverEl = inverElFt + " (ft) " + inverElIn + " (in)";
-    var comments = json['comments'];
+        cbType = json['CBType'],
+        rimEl = (json['rimEl'] != null) ? Number(json['rimEl']) : "",
+        accDia = (json['accDia'] != null) ? Number(json['accDia']) : "", 
+        accMat = (json['accMat'] != null) ? json['accMat'] : "",
+        accType = (json['accType'] != null) ? json['accType'] : "",
+        inverEl = (json['inverEl'] != null) ? Number(json['inverEl']) : "",
+        comments = json['comments'];
     
     var cont = '<div>' +
     				'<p><b>Basin ID#: </b> '+ json['basin#'] +'</p>' + 
@@ -1843,11 +1772,11 @@ function basinPopInfo(map,evt,json) {
     				'<p><b>Municipality: </b>'+muni+'</p>' +
     				'<p><b>Location Description: </b>'+locDesc+'</p>' +
     				'<p><b>CB Type: </b>'+cbType+'</p>' +
-    				'<p><b>Top of Structure: </b>'+rimEl+'</p>' +
-    				'<p><b>Diameter: </b>'+accDia+'</p>' +
+    				'<p><b>Top of Structure: </b>'+rimEl+' (ft)</p>' +
+    				'<p><b>Diameter: </b>'+accDia+' (in)</p>' +
     				'<p><b>Access Material: </b>'+accMat+'</p>' +
     				'<p><b>Access Type: </b>'+accType+'</p>' +
-    				'<p><b>Invert Elevation: </b>'+inverEl+'</p>' +
+    				'<p><b>Invert Elevation: </b>'+inverEl+' (ft)</p>' +
     				'<p><b>Comments: </b><p>'+comments+'</p></p>' +
     		   '</div>';
     if(!ismobile) {
