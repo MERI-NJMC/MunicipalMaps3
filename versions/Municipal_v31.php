@@ -562,6 +562,7 @@
 					</nav>
 				</header>
 			</div>
+			<div id="search2" class="search2"></div>
 			<div id="map" class="map"></div>
 		</div>
 		<script src="http://js.arcgis.com/3.9compact/init.js"></script>

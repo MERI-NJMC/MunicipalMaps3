@@ -1,3 +1,11 @@
+#search2
+{
+	display: block;
+	left: 20px;
+	position: absolute;
+	top: 70px;
+	z-index: 2;
+}*/
 :selection
 {
 	background: #b3d4fc;

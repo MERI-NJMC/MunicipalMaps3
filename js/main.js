@@ -39,6 +39,7 @@ var DynamicLayerHost = "http://arcgis5.njmeadowlands.gov/webmaps",
 	navToolbar,
 	tool_selected,
 	locateButton,
+	geocoder,
 	search_results = [],
 	search_acres = [],
 	legendDigit,
@@ -2780,7 +2781,7 @@ function f_query_owner_int_exec(ownerid) {
 }
 (function() {
 	"use strict";
-	require(["esri/toolbars/navigation", "esri/tasks/GeometryService", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/GraphicsLayer", "esri/map", "dojo/on", "esri/dijit/Measurement", "esri/config", "esri/dijit/PopupMobile", "esri/dijit/Popup", "esri/dijit/LocateButton", "esri/dijit/Scalebar", "esri/dijit/Legend"], function (Navigation, GeometryService, ArcGISDynamicMapServiceLayer, GraphicsLayer, Map, on, Measurement, config, PopupMobile, Popup, LocateButton, scalebar, Legend) {
+	require(["esri/toolbars/navigation", "esri/tasks/GeometryService", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/GraphicsLayer", "esri/map", "dojo/on", "esri/dijit/Measurement", "esri/config", "esri/dijit/PopupMobile", "esri/dijit/Popup", "esri/dijit/LocateButton", "esri/dijit/Scalebar", "esri/dijit/Legend","esri/dijit/Geocoder"], function (Navigation, GeometryService, ArcGISDynamicMapServiceLayer, GraphicsLayer, Map, on, Measurement, config, PopupMobile, Popup, LocateButton, scalebar, Legend, Geocoder) {
 		config.defaults.io.alwaysUseProxy = false;
 		config.defaults.io.proxyUrl = DynamicLayerHost + "/proxy/proxy.ashx"; // set the default geometry service
 		config.defaults.geometryService = new GeometryService(DynamicLayerHost + "/rest/services/Utilities/Geometry/GeometryServer");
@@ -2812,6 +2813,13 @@ function f_query_owner_int_exec(ownerid) {
 			minZoom: 12,
 			infoWindow: infowindow
 		});
+		geocoder = new Geocoder({
+			arcgisGeocoder: {
+				placeholder: "Type Street Address",
+				sourceCountry: "USA"
+			},
+			map: M_meri,
+        }, "search2");
 		scalebar({
 			map: M_meri,
 			attachTo: "bottom-left"
