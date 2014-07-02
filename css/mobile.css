@@ -1,3 +1,10 @@
+#search2 {
+	display: block;
+	left: 20px;
+	position: absolute;
+	top: 90px;
+	z-index: 2;
+}
 nav a
 {
 	color: #777;
@@ -180,10 +187,12 @@ body
 }
 .previous
 {
+	display: none;
 	background-position: 7px -73px;
 }
 .next
 {
+	display: none;
 	background-position: 7px -99px;
 }
 .pan
