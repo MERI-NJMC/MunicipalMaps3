@@ -2387,6 +2387,7 @@ function f_load_tools() {
 		var header = document.getElementsByClassName("header-container")[0],
 			nav_tabs = document.getElementById("nav_tabs"),
 			buttons = document.getElementById("buttons"),
+			search2 = document.getElementById("search2"),
 			logo = document.getElementById("logo"),
 			target,
 			index,
@@ -2410,9 +2411,11 @@ function f_load_tools() {
 					nav_tabs.style.width = "90%";
 					buttons.style.visibility = "hidden";
 					logo.style.visibility = "hidden";
+					search2.style.visibility = "hidden";
 				} else {
 					header.style.width = "100%";
 					buttons.style.visibility = "visible";
+					search2.style.visibility = "visible";
 					nav_tabs.style.width = "0";
 					logo.style.visibility = "visible";
 				}
