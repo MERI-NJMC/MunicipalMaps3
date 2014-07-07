@@ -4,6 +4,7 @@
 	position: absolute;
 	top: 90px;
 	z-index: 2;
+	float: left;
 }
 nav a
 {
