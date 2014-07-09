@@ -2789,7 +2789,7 @@ function f_query_owner_int_exec(ownerid) {
 		config.defaults.io.proxyUrl = DynamicLayerHost + "/proxy/proxy.ashx"; // set the default geometry service
 		config.defaults.geometryService = new GeometryService(DynamicLayerHost + "/rest/services/Utilities/Geometry/GeometryServer");
 		// set dynamic layer for MunicipalMap_live
-		var LD_button = new ArcGISDynamicMapServiceLayer(DynamicLayerHost + "/rest/services/Municipal/MunicipalMap_live/MapServer", {opacity: 1.0, id: "LD_button"}),
+		var LD_button = new ArcGISDynamicMapServiceLayer(DynamicLayerHost + "/rest/services/Municipal/MunicipalMap_live/MapServer", {opacity: 0.75, id: "LD_button"}),
 			LD_flooding = new ArcGISDynamicMapServiceLayer(DynamicLayerHost + "/rest/services/Flooding/20131023_FloodingBaseMap/MapServer", {opacity: 0.65, id: "LD_flooding"}),
 			e_info = document.createElement("div"),
 			infowindow,

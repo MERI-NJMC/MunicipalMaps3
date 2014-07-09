@@ -1,6 +1,6 @@
 #search2{
 	display: block;
-	left: 20px;
+	left: 30px;
 	margin-top: 10px;
 	top: 90px;
 	z-index: 2;
@@ -626,7 +626,7 @@ button, .button
 }
 .button_clicked
 {
-	background-color: #FAF573;
+	background-color: #FFFF77;
 }
 input[type="text"],input[type="password"]
 {
