@@ -97,7 +97,9 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 			e_td = document.createElement("td"),
 			next_arrow = document.getElementsByClassName("titleButton arrow")[0],
 			aliases = f_getAliases(),
-			e_tr2;
+			e_tr2,
+			userName = getCookie('ERIS_NAME'),
+			cookieVal = getCookie('NJMC_MERI_ERIS');
 		el_popup_content.className = "esriViewPopup";
 		el_popup_view.className = "mainSection";
 		el_popup_content.appendChild(el_popup_view);
@@ -109,7 +111,14 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 		e_tr.style.verticalAlign = "top";
 		e_tbody.appendChild(e_tr);
 		e_td.className = "attrValue";
-		e_td.innerHTML = '<a href="' + ERIS_LINK + '" target="_blank">View Building Info</a>';
+		//var ERIS_LINK = 'http://www.stevenbirkner.com:3000/login/auth/?b=' + bid + '&a=planning';
+		e_td.innerHTML = '<form target="_target" action="http://www.stevenbirkner.com:3000/login/auth/" method="post">' +
+									'<input type="text" name="userName" value="'+userName+'" hidden>' +
+									'<input type="text" name="cookieVal" value="'+cookieVal+'" hidden>' +
+									'<input type="text" name="b" value="'+bid+'" hidden>' +
+									'<input type="text" name="a" value="planning" hidden>' +
+									'<input type="submit" value="View Building Info">' +
+								'</form>';
 		e_tr.appendChild(e_td);
 		for (featureSet in featureSets) {
 			if (featureSets.hasOwnProperty(featureSet)) {
@@ -175,6 +184,7 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 			document.getElementsByClassName("esriMobileNavigationItem right2")[0].style.display = "none";
 		}
 }
+
 function f_ERIS_selection_exec(map_event) {
 	"use strict";
 	document.getElementById("map_container").style.cursor = "progress";
@@ -185,7 +195,9 @@ function f_ERIS_selection_exec(map_event) {
 			Q_ERIS_selection = new Query(),
 			Q_ERIS_BIDtoINTERMEDIATE = new Query(),
 			Q_RTK_IDS = new RelationshipQuery(),
-			next_arrow = document.getElementsByClassName("titleButton arrow")[0];
+			next_arrow = document.getElementsByClassName("titleButton arrow")[0],
+			userName = getCookie('ERIS_NAME'),
+			cookieVal = getCookie('NJMC_MERI_ERIS');
 		Q_ERIS_selection.returnGeometry = true;
 		Q_ERIS_selection.outFields = ["BID", "MUNICIPALITY"];
 		Q_ERIS_selection.geometry = map_event.mapPoint;
@@ -199,8 +211,16 @@ function f_ERIS_selection_exec(map_event) {
 			console.log(bid);
 			Q_ERIS_BIDtoINTERMEDIATE.text = bid;
 			QT_ERIS_BIDtoINTERMEDIATE.executeForIds(Q_ERIS_BIDtoINTERMEDIATE, function (results) {
-					var ERIS_LINK = 'http://apps.njmeadowlands.gov/ERIS/?b=' + bid + '&a=planning';
-					ERIS_LINK = '<span class="ERIS_LINK"><a href="' + ERIS_LINK + '" target="_blank">View Building Info</a></span>';
+					// var ERIS_LINK = 'http://apps.njmeadowlands.gov/ERIS/?b=' + bid + '&a=planning';
+					var ERIS_LINK = 'http://www.stevenbirkner.com:3000/login/auth/?b=' + bid + '&a=planning';
+					// ERIS_LINK = '<span class="ERIS_LINK"><a href="' + ERIS_LINK + '" target="_blank">View Building Info</a></span>';
+					ERIS_LINK = '<form target="_target" action="http://www.stevenbirkner.com:3000/login/auth/" method="post">' +
+									'<input type="text" name="userName" value="'+userName+'" hidden>' +
+									'<input type="text" name="cookieVal" value="'+cookieVal+'" hidden>' +
+									'<input type="text" name="b" value="'+bid+'" hidden>' +
+									'<input type="text" name="a" value="planning" hidden>' +
+									'<input type="submit" value="View Building Info">' +
+								'</form>';
 					if (results == null) {
 						console.log("Its true");
 						M_meri.infoWindow.clearFeatures();
@@ -305,4 +325,18 @@ function f_startup_eris() {
 		f_load_ERIS_tools();
 		legendLayers.push({layer: ERIS_base, title: "ERIS Layers"});
 	});
+}
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
 }
