@@ -2784,7 +2784,7 @@ function f_query_owner_int_exec(ownerid) {
 }
 (function() {
 	"use strict";
-	require(["esri/toolbars/navigation", "esri/tasks/GeometryService", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/GraphicsLayer", "esri/map", "dojo/on", "esri/dijit/Measurement", "esri/config", "esri/dijit/PopupMobile", "esri/dijit/Popup", "esri/dijit/LocateButton", "esri/dijit/Scalebar", "esri/dijit/Legend","esri/dijit/Geocoder"], function (Navigation, GeometryService, ArcGISDynamicMapServiceLayer, GraphicsLayer, Map, on, Measurement, config, PopupMobile, Popup, LocateButton, scalebar, Legend, Geocoder) {
+	require(["esri/toolbars/navigation", "esri/tasks/GeometryService", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/GraphicsLayer", "esri/map", "dojo/on", "esri/dijit/Measurement", "esri/config", "esri/dijit/PopupMobile", "esri/dijit/Popup", "esri/dijit/LocateButton", "esri/dijit/Scalebar", "esri/dijit/Legend","esri/dijit/Geocoder",  "esri/graphic", "esri/symbols/SimpleMarkerSymbol","esri/geometry/screenUtils", "dojo/dom","dojo/dom-construct","dojo/query","dojo/_base/Color","dojo/domReady!"] , function (Navigation, GeometryService, ArcGISDynamicMapServiceLayer, GraphicsLayer, Map, on, Measurement, config, PopupMobile, Popup, LocateButton, scalebar, Legend, Geocoder, Graphic, SimpleMarkerSymbol, screenUtils, dom, domConstruct, query, Color) {
 		config.defaults.io.alwaysUseProxy = false;
 		config.defaults.io.proxyUrl = DynamicLayerHost + "/proxy/proxy.ashx"; // set the default geometry service
 		config.defaults.geometryService = new GeometryService(DynamicLayerHost + "/rest/services/Utilities/Geometry/GeometryServer");
@@ -2822,7 +2822,22 @@ function f_query_owner_int_exec(ownerid) {
 				sourceCountry: "USA"
 			},
 			map: M_meri,
+			autoComplete: true,
         }, "search2");
+
+		geocoder.on("select", showLocation);
+
+		function showLocation(evt) {
+			M_meri.graphics.clear();
+			var point = evt.result.feature.geometry;
+			var symbol = new SimpleMarkerSymbol()
+			.setStyle("square")
+			.setColor(new Color([255,0,0,0.5]));
+			var graphic = new Graphic(point, symbol);
+			M_meri.graphics.add(graphic);
+		}
+
+
 		scalebar({
 			map: M_meri,
 			attachTo: "bottom-left"
