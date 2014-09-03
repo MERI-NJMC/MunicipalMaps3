@@ -2,7 +2,7 @@
 <html class="no-js">
 	<head>
 		<meta charset="utf-8">
-		<title>New Jersey Meadowlands Commission &raquo; Municipal Map v.31</title>
+		<title>New Jersey Meadowlands Commission &raquo; Municipal Map</title>
 		<meta name="viewport" content="width=device-width, user-scalable=no">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="author" content="Jose Baez - Intern Web Developer">

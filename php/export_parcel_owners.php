@@ -368,7 +368,7 @@ foreach($rest_response_json as $rest_layer => $v){
 						case 'MUN_CODE': $val = lookup_mun($layer_value); break;
 						default: $val = $layer_value;
 					}
-					echo $val;
+					
 					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $val);
 					$col++;
 				}
@@ -429,5 +429,7 @@ foreach($rest_response_json as $rest_layer => $v){
 			$objWriter->setPreCalculateFormulas(false);
 			$objWriter->save('php://output');
 		}
-
+	ini_set('display_errors',1);
+	ini_set('display_startup_errors',1);
+	error_reporting(-1);
 ?>
