@@ -1559,22 +1559,18 @@ function hydrantInfo(map,evt,json) {
 	var popup = map.infoWindow,
 		hid = (json['hid'] != "Null") ? json['hid'] : "",
 		ownedBy = (json['ownedBy'] != "Null") ? json['ownedBy'] : "",
-		mainBy = (json['mainBy'] != "Null") ? json['mainBy'] : "",
 		muni = (json['muni'] != "Null") ? json['muni'] : "",
 		loc = (json['loc'] != "Null") ? json['loc'] : "",
-		css = (json['css'] != null) ? json['css'] : "",
 		pipeDia = (json['pipeDia'] != "Null") ? json['pipeDia'] : "",
-		comments = (json['comments'] != "Null") ? json['comments'] : "",
+		cs = (json['cs'] != "Null") ? json['cs'] : "",
 
 	cont = '<div>' + 
 				'<p><b>Hydrant ID#: </b>'+hid+'</p>' + 
 				'<p><b>Owned By: </b>' +ownedBy+'</p>' +
-				'<p><b>Maintained By: </b>' +mainBy+'</p>' +
 				'<p><b>Municipality: </b>' +muni+'</p>' +
 				'<p><b>Location: </b>' +loc+'</p>' +
-				'<p><b>Cross Section Shape: </b>' +css+'</p>' +
 				'<p><b>Pipe Diameter: </b>' +pipeDia+' (in)</p>' +
-				'<p><b>Comments: </b><p>' +comments+'</p></p>' +
+				'<p><b>Cross Street: </b>' +cs+ ' </p>' +
 		   '</div>';
 
 	if(!ismobile) {

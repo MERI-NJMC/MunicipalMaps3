@@ -112,12 +112,11 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 		e_tbody.appendChild(e_tr);
 		e_td.className = "attrValue";
 		e_td.innerHTML = '<a href="' + ERIS_LINK + '" target="_blank">View Building Info</a>';
-		//var ERIS_LINK = 'http://www.stevenbirkner.com:3000/login/auth/?b=' + bid + '&a=planning';
-		// e_td.innerHTML = '<form target="_target" action="http://www.stevenbirkner.com:3000/login/auth/" method="post">' +
+		//var ERIS_LINK = 'http://www.stevenbirkner.com:3000/login/auth/?b=' + bid;
+		// e_td.innerHTML = '<form target="_target" action="http://apps.njmeadowlands.gov:3000/login/auth/" method="post">' +
 		// 							'<input type="text" name="userName" value="'+userName+'" hidden>' +
 		// 							'<input type="text" name="cookieVal" value="'+cookieVal+'" hidden>' +
 		// 							'<input type="text" name="b" value="'+bid+'" hidden>' +
-		// 							'<input type="text" name="a" value="planning" hidden>' +
 		// 							'<input type="submit" value="View Building Info">' +
 		// 						'</form>';
 		e_tr.appendChild(e_td);
@@ -215,11 +214,10 @@ function f_ERIS_selection_exec(map_event) {
 					var ERIS_LINK = 'http://apps.njmeadowlands.gov/ERIS/?b=' + bid + '&a=planning';
 					//var ERIS_LINK = 'http://www.stevenbirkner.com:3000/login/auth/?b=' + bid + '&a=planning';
 					ERIS_LINK = '<span class="ERIS_LINK"><a href="' + ERIS_LINK + '" target="_blank">View Building Info</a></span>';
-					// ERIS_LINK = '<form target="_target" action="http://www.stevenbirkner.com:3000/login/auth/" method="post">' +
+					// ERIS_LINK = '<form target="_target" action="http://apps.njmeadowlands.gov:3000/login/auth/" method="post">' +
 					// 				'<input type="text" name="userName" value="'+userName+'" hidden>' +
 					// 				'<input type="text" name="cookieVal" value="'+cookieVal+'" hidden>' +
 					// 				'<input type="text" name="b" value="'+bid+'" hidden>' +
-					// 				'<input type="text" name="a" value="planning" hidden>' +
 					// 				'<input type="submit" value="View Building Info">' +
 					// 			'</form>';
 					if (results == null) {
