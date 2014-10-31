@@ -373,12 +373,11 @@
 				$json['layer'] = "Fire Hydrant";
 				$json['hid'] = $hydrant->FacilityID;
 				$json['ownedBy'] = $hydrant->OwnedBy;
-				$json['mainBy'] = $hydrant->MaintainedBy;
 				$json['muni'] = $hydrant->Municipality;
 				$json['loc'] = $hydrant->Location;
-				$json['css'] = $hydrant->CrossSectionShape;
 				$json['pipeDia'] = $hydrant->PipeDiameter;
-				$json['comments'] = $hydrant->Comments;
+				$json['cs'] = $hydrant->CrossStreet;
+
 				echo json_encode($json);
 				break;
 			} else if ($layer->layerName == "Sanitary Manhole") {

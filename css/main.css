@@ -466,15 +466,15 @@ nav ul li ul li a
 }
 .util {
 	background-image: url("img/util.png");
-	background-position: .45em .45em;
+	background-position: .4em .4em;
 }
 .zoomin
 {
-	background-position: .45em .45em;
+	background-position: 3px 3px;
 }
 .zoomout
 {
-	background-position: .45em -1.98em;
+	background-position: 3px -21px;
 }
 .locate
 {
@@ -482,19 +482,19 @@ nav ul li ul li a
 }
 .extent
 {
-	background-position: .45em -4.5em;
+	background-position: 3px -43px;
 }
 .previous
 {
-	background-position: .45em -6.9em;
+	background-position: 3px -66px;
 }
 .next
 {
-	background-position: .45em -9.3em;
+	background-position: 3px -88px;
 }
 .pan
 {
-	background-position: .45em -11.7em;
+	background-position: 3px -111px;
 }
 .buttons
 {
@@ -502,28 +502,28 @@ nav ul li ul li a
 }
 .identify
 {
-	background-position: .3em -14.2em;
+	background-position: 3px -134px;
 }
 .parcel
 {
-	background-position: .3em -16.7em;
+	background-position: 3px -158px;
 }
 .measure
 {
-	background-position: .3em -19.3em;
+	background-position: 3px -182px;
 }
 .clear
 {
-	background-position: .28em -27em;
+	background-position: 3px -255px;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
+/*@media screen and (-webkit-min-device-pixel-ratio:0) {
 	.identify
 	{
-		background-position: .4em -14em;
+		background-position: 3.5px -134px;
 	}
 	.parcel
 	{
-		background-position: .4em -16.5em;
+		background-position: .4em -16.65em;
 	}
 	.clear
 	{
@@ -531,13 +531,13 @@ nav ul li ul li a
 	}
 	.measure
 	{
-		background-position: .4em -19em;
+		background-position: .4em -19.25em;
 	}
 	.clear
 	{
-		background-position: .4em -26.39em;
+		background-position: .4em -26.8em;
 	}
-}
+}*/
 button, .button
 {
     background-color: #0099dd;

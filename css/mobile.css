@@ -1,10 +1,6 @@
 #search2 {
-	display: block;
-	left: 20px;
-	position: absolute;
-	top: 90px;
-	z-index: 2;
-	float: left;
+	display: none;
+
 }
 nav a
 {
@@ -19,7 +15,7 @@ nav a
 }
 body
 {
-	font-size: 20px;
+	font-size: 18.5px;
 }
 .mypop {
 	z-index: 100;
@@ -32,6 +28,10 @@ body
 	overflow-y: auto;
 		
 	border-radius: 15px; 
+}
+
+ul.tabs {
+	font-size: 18px;
 }
 .active > ul
 {
@@ -202,7 +202,7 @@ body
 }
 .identify
 {
-	background-position: 7px -153px;
+	background-position: 7px -154.5px;
 }
 .parcel
 {
@@ -210,7 +210,10 @@ body
 }
 .clear
 {
-	background-position: 6px -237px;
+	background-position: 6px -294px;
+}
+.ERIS {
+	background-position: 6px -238px;
 }
 .LocateButton .zoomLocateButton:active
 {
@@ -231,40 +234,7 @@ body
     width: 25px;
     z-index: 1;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	.extent
-	{
-		background-position: 7px -47px;
-	}
-	.previous
-	{
-		background-position: 7px -74px;
-	}
-	.next
-	{
-		background-position: 7px -100px;
-	}
-	.pan
-	{
-		background-position: 7px -126px;
-	}
-	.identify
-	{
-		background-position: 6px -153px;
-	}
-	.parcel
-	{
-		background-position: 6px -181px;
-	}
-	.ERIS
-	{
-		background-position: 6px -237px;
-	}
-	.clear
-	{
-		background-position: 6px -293px;
-	}
-}
+
 @-moz-document url-prefix() {
 	.extent
 	{

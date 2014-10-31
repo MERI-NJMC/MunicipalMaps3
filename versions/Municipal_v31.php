@@ -6,10 +6,6 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="author" content="Jose Baez - Intern Web Developer">
-<?php if ($_SESSION['ios']): ?>
-		<meta content='yes' name='apple-mobile-web-app-capable'>
-		<meta content='white-translucent' name='apple-mobile-web-app-status-bar-style'>
-<?php endif ?>
 		<link rel="stylesheet" href="css/normalize.min.css">
 		<link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
 		<link rel="stylesheet" href="css/main.css">
@@ -18,6 +14,11 @@
 <?php endif ?>
 <?php if ($_SESSION['isMobile']): ?>
 		<link rel="stylesheet" href="css/mobile.css">
+<?php endif ?>
+<?php if ($_SESSION['ios']): ?>
+		<meta content='yes' name='apple-mobile-web-app-capable'>
+		<meta content='white-translucent' name='apple-mobile-web-app-status-bar-style'>
+		<link rel='stylesheet' href="css/ios.css">
 <?php endif ?>
 <script>
 <?php if($_SESSION['isMobile']): ?>
@@ -572,5 +573,10 @@
 <?php if ($_SESSION['isERIS']): ?>
 		<script  src="js/ERIS.js"></script>
 <?php endif ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			console.log(navigator.userAgent);
+		});
+	</script>
 	</body>
 </html>
