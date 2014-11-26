@@ -164,10 +164,10 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 							record_main[index2] = "Not available";
 						}
 						if (record_main[index2] !== "") {
-							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">CAS Number:</td><td class="attrValue">' + record_main[index2].toLowerCase() + '</td>';
+							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">CAS Number:</td><td class="attrValue">' + record_main[index2] + '</td>';
 						}
 						if (record_main[index2 + 1] !== "") {
-							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">Location:</td><td class="attrValue">' + record_main[index2 +1].toLowerCase() + '</td>';
+							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">Location:</td><td class="attrValue">' + record_main[index2 +1] + '</td>';
 						}
 					}
 					old_index = index2;
@@ -220,6 +220,7 @@ function f_ERIS_selection_exec(map_event) {
 					// 				'<input type="text" name="b" value="'+bid+'" hidden>' +
 					// 				'<input type="submit" value="View Building Info">' +
 					// 			'</form>';
+					console.log(results);
 					if (results == null) {
 						console.log("Its true");
 						M_meri.infoWindow.clearFeatures();
@@ -235,6 +236,7 @@ function f_ERIS_selection_exec(map_event) {
 						Q_RTK_IDS.objectIds = [results];
 						Q_RTK_IDS.relationshipId = 3;
 						QT_Q_RTK_IDS.executeRelationshipQuery(Q_RTK_IDS, function (results) {
+							console.log(results);
 							f_query_RTK_IDS_results(results, bid, map_event);
 						}, function(error){console.log(error);});
 					}
