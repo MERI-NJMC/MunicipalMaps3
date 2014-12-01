@@ -140,6 +140,7 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 								e_tr2.style.verticalAlign = "top";
 								e_tbody.appendChild(e_tr2);
 								exclude.push(att);
+
 								e_tr2.innerHTML = '<td class="attrName">' + aliases.fieldNames[att] + ':</td>';
 								e_tr2.innerHTML += '<td class="attrValue">' + featureAttributes[att] + '</td>';
 							}
@@ -154,19 +155,25 @@ function f_query_RTK_IDS_results(featureSets, bid, map_event) {
 				for (index = 0; index < substance_name.length; index += 1) {
 					e_tr2.style.verticalAlign = "top";
 					e_tbody.appendChild(e_tr2);
-					if (substance_no[index].SUBSTANCE_NO !== null & f_urlExists('http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf')) {
+					console.log((substance_no[index].SUBSTANCE_NO !== null && f_urlExists('http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf')));
+
+					if (substance_no[index].SUBSTANCE_NO !== null && f_urlExists('http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf')) {
 						e_tr2.innerHTML = '<td class="attrName"><a href="http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf" target="_blank"><strong>' + substance_name[index].SUBSTANCE_NAME + '</strong></a>';
 					} else {
-						e_tr2.innerHTML = '<td class="attrName"><a href="http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf" onclick="return false;"><strong>' + substance_name[index].SUBSTANCE_NAME + '</strong></a>';
+						if(substance_no[index].SUBSTANCE_NO == null) {
+							e_tr2.innerHTML = '<td class="attrName"><a href="http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf" onclick="return false;"><strong>No Information Available</strong></a>';
+						} else {
+							e_tr2.innerHTML = '<td class="attrName"><a href="http://arcgis5.njmeadowlands.gov/municipal/ERIS/factsheets/' + substance_no[index].SUBSTANCE_NO + '.pdf" onclick="return false;"><strong>' + substance_name[index].SUBSTANCE_NAME + '</strong></a>';
+						}
 					}
 					for (index2 = old_index; index2 < old_index + 1; index2 += 2) {
 						if(record_main[index2] === null) {
 							record_main[index2] = "Not available";
 						}
-						if (record_main[index2] !== "") {
+						if (record_main[index2] !== "" && record_main[index2] !== null) {
 							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">CAS Number:</td><td class="attrValue">' + record_main[index2] + '</td>';
 						}
-						if (record_main[index2 + 1] !== "") {
+						if (record_main[index2 + 1] !== "" && record_main[index2 + 1] !== null ) {
 							e_tbody.innerHTML += '<tr style="vertical-align: top;"><td class="attrName">Location:</td><td class="attrValue">' + record_main[index2 +1] + '</td>';
 						}
 					}
