@@ -2278,13 +2278,15 @@ function f_search_owner(json) {
 	var search = JSON.parse(json);
 	if (search.owner !== "") {
 		require(["esri/tasks/query", "esri/tasks/QueryTask"], function (Query, QueryTask) {
+			console.log(parcels_json.tables.gis_sde_tbl_cad_owner);
 			var Q_owners = new Query(),
 				QT_owners = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.tables.gis_sde_tbl_cad_owner),
 				e_search_progress = document.getElementById("search_progress"),
 				outFields_json = f_getoutFields();
 			Q_owners.returnGeometry = false;
 			Q_owners.outFields = outFields_json.owner;
-			Q_owners.where = "Where NAME LIKE '%" + search.owner + "%'";
+			Q_owners.where = "WHERE NAME LIKE '%" + search.owner + "%'";
+			console.log(Q_owners.where);
 			QT_owners.execute(Q_owners, f_query_owners_results);
 			e_search_progress.value = "1";
 			e_search_progress.style.display = "none";
@@ -2724,6 +2726,7 @@ function f_query_owner_int_exec(ownerid) {
 			Q_owner_int,
 			QT_parcel_selection,
 			outFields_json = f_getoutFields();
+		console.log(ownerid);
 		if (findparcels.innerHTML === "Find Owner Parcels") {
 			QT_owner_int = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.tables.gis_sde_tbl_cad_intermediate);
 			QT_parcel_selection = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.layers.gis_sde_parcel);
@@ -2731,36 +2734,75 @@ function f_query_owner_int_exec(ownerid) {
 			Q_owner_int.where = "Where OWNERID = " + ownerid;
 			QT_owner_int.executeForIds(Q_owner_int, function (results) {
 				if (results) {
+					console.log(results[0]);
+					console.log(parcels_json.tables.gis_sde_tbl_cad_intermediate);
 					var QT_owner_parcels = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.tables.gis_sde_tbl_cad_intermediate),
 						Q_owner_parcels = new RelationshipQuery(),
 						Q_parcel_selection = new Query();
 					Q_owner_parcels.relationshipId = 4;
-					Q_owner_parcels.returnGeometry = false;
-					Q_owner_parcels.objectIds = [results];
+					Q_owner_parcels.returnGeometry = true;
+					Q_owner_parcels.objectIds = results;
 					Q_owner_parcels.outFields = ["PID"];
 					Q_parcel_selection.outSpatialReference = {wkid: 3857};
 					Q_parcel_selection.returnGeometry = true;
 					Q_parcel_selection.outFields = outFields_json.parcel;
+					console.log(Q_owner_parcels);
 					QT_owner_parcels.executeRelationshipQuery(Q_owner_parcels, function (featureSets) {
-						var where_PID = "PID IN (",
-							featureSet,
-							i,
-							il;
-						for (featureSet in featureSets) {
-							if (featureSets.hasOwnProperty(featureSet)) {
-								for (i = 0, il = featureSets[featureSet].features.length; i < il; i += 1) {
-									where_PID += "'" + featureSets[featureSet].features[i].attributes.PID + "',";
-								}
-							}
-						}
-						where_PID = where_PID.substring(0, where_PID.length - 1);
-						where_PID += ")";
-						Q_parcel_selection.where = where_PID;
-						QT_parcel_selection.execute(Q_parcel_selection, function (results) {
-							f_process_results_parcel(results, "owner_" + ownerid);
-						});
-						Q_parcel_selection.where = "";
-					});
+						console.log('here');
+						console.log(featureSets);
+
+						//TEMPORARYFIX Above query tasks might not matter
+						  $.ajax({
+						  	url: 'http://arcgis5.njmeadowlands.gov/webmaps/rest/services/Parcels/NJMC_Parcels_2011/MapServer/8/query?where=&text=&objectIds='+results+'&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=PID&returnGeometry=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson',
+						  	type: 'GET',
+						  	dataType: 'json',
+						  	success: function(data,textStatus,xhr) {
+						  		// console.log(data.features[0].attributes['PID']);
+								var where_PID = "PID IN (";
+								for(var i=0; i < data.features.length; i++) {
+									where_PID += "'" + data.features[i].attributes['PID'] + "',";
+						  		}
+								where_PID = where_PID.substring(0, where_PID.length - 1);
+								where_PID += ")";
+								console.log(where_PID);
+								Q_parcel_selection.where = where_PID;
+								QT_parcel_selection.execute(Q_parcel_selection, function (results) {
+									f_process_results_parcel(results, "owner_" + ownerid);
+								});
+								Q_parcel_selection.where = "";
+							  		
+
+
+						  	},
+						  });
+
+
+
+
+						// var where_PID = "PID IN (",
+						// 	featureSet,
+						// 	i,
+						// 	il;
+						// for (featureSet in featureSets) {
+						// 	if (featureSets.hasOwnProperty(featureSet)) {
+						// 		for (i = 0, il = featureSets[featureSet].features.length; i < il; i += 1) {
+						// 			console.log('featureset crap:' + featureSets[featureSet].features[i].attributes.PID);
+						// 			where_PID += "'" + featureSets[featureSet].features[i].attributes.PID + "',";
+						// 			console.log('where pid: ' + where_PID);
+
+						// 		}
+						// 	}
+						// }
+						// where_PID = where_PID.substring(0, where_PID.length - 1);
+						// where_PID += ")";
+						// console.log(where_PID);
+						// Q_parcel_selection.where = where_PID;
+
+						// QT_parcel_selection.execute(Q_parcel_selection, function (results) {
+						// 	f_process_results_parcel(results, "owner_" + ownerid);
+						// });
+						// Q_parcel_selection.where = "";
+					}, function(err){console.log(err);});
 				}
 			});
 			findparcels.onclick = function (e) {
