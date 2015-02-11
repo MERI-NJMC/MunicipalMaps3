@@ -32,7 +32,10 @@
  *	e_    -	html element
  *	_lbl  -	label
  */
-var DynamicLayerHost = "http://arcgis5.njmeadowlands.gov/webmaps",
+
+
+ //declaring variables
+var DynamicLayerHost = "http://arcgis5.njmeadowlands.gov/webmaps",  //first half of url
 	IP_Identify_Layers = [],
 	measurementDijit,
 	M_meri,
@@ -47,25 +50,38 @@ var DynamicLayerHost = "http://arcgis5.njmeadowlands.gov/webmaps",
 	legendLayers = [],
 	parcels_json,
 	layers_json;
+
+
+//gets layer info...duh
 function f_getLayerInfo() {
-	var json = {},
+	//declaring variables
+	var json = {}, //creates empty json objects
 		env = ["FEMA PANEL", "RIPARIAN CLAIM (NJDEP)", "FEMA (100-YR FLOOD)", "WETLANDS (DEP)", "SEISMIC SOIL CLASS"],
 		hyd = ["TIDEGATES", "CREEK NAMES", "DRAINAGE", "HYDRO LINES/ WETLAND EDGE", "WATERWAYS"],
 		inf = ["STORMWATER CATCHBASIN", "STORMWATER MANHOLE", "STORMWATER OUTFALL", "STORMWATER LINE", "SANITARY MANHOLE", "SANITARY LINES", "HYDRANTS"],
 		pol = ["DISTRICT LINE", "MUNICIPAL BOUNDARY", "BLOCK LIMIT", "PARCEL LINES", "ENCUMBERANCE", "BUILDINGS", "CENSUS BLOCK 2010", "VOTING DISTRICTS 2010", "LAND USE", "ZONING"],
 		topo = ["SPOT ELEVATIONS", "FENCE LINE", "CONTOUR LINES"],
 		tra = ["DOT ROADS", "BRIDGES/ OVERPASS", "RAILS", "ROADS ROW"],
-		xmlhttp = new XMLHttpRequest(),
+		xmlhttp = new XMLHttpRequest(), //retrieve data from a URL without page refresh
 		data,
 		index,
 		identify,
 		bool,
 		index2;
-	json.layers = [];
-	json.layers.push({
+	json.layers = []; //gives json an array named layers
+	json.layers.push({ //pushes name value to the array layers with an associated array called layers
 		name: "Environmental",
 		layers: []
 	});
+	/*
+	Example of format
+	layers = [
+	{
+	'name': 'Environmental', 'layers': []
+	}
+			]
+	*/
+
 	json.layers.push({
 		name: "Hydro",
 		layers: []
@@ -86,18 +102,31 @@ function f_getLayerInfo() {
 		name: "Transportation",
 		layers: []
 	});
-	xmlhttp.open("GET", DynamicLayerHost + "/rest/services/Municipal/MunicipalMap_live/MapServer?f=json&pretty=false", false);
-	xmlhttp.send();
-	if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+
+
+
+	xmlhttp.open("GET", DynamicLayerHost + "/rest/services/Municipal/MunicipalMap_live/MapServer?f=json&pretty=false", false); //initializes the request
+	xmlhttp.send(); //sends the request
+	if (xmlhttp.readyState === 4 && xmlhttp.status === 200) { //readyState 4 is ok and status 200 is ok  Details at http://www.w3schools.com/ajax/ajax_xmlhttprequest_onreadystatechange.asp
 		data = JSON.parse(xmlhttp.responseText);
-		index = 0;
+		//console.log(data); //uncomment to see data
+		index = 0; 
 		identify = ["DISTRICT LINE", "CREEK NAMES", "WATERWAYS", "MUNICIPAL BOUNDARY", "BRIDGES/ OVERPASS", "BLOCK LIMIT", "PARCEL LINES", "ENCUMBERANCE", "CENSUS BLOCK 2010", "BRIDGES/ OVERPASS"];
-		for (index = 0; index < data.layers.length; index += 1) {
-			if (identify.indexOf(data.layers[index].name) > -1) {
+
+		for (index = 0; index < data.layers.length; index += 1) { 
+			if (identify.indexOf(data.layers[index].name) > -1) { //if the name in the json.layers array doesnt exist in identify, bool = 1
+			/*the above sees if the name of the data layer is in indentify. 
+			data.layers[index].name gets the name of said layer
+			indentify.indexOf() sees if the name is in the array identify
+			a -1 is returned if nothing is found
+
+			*/
 				bool = 0;
 			} else {
 				bool = 1;
 			}
+
+			//same logic as above
 			if (env.indexOf(data.layers[index].name) > -1) {
 				index2 = 0;
 			} else if (hyd.indexOf(data.layers[index].name) > -1) {
@@ -113,17 +142,35 @@ function f_getLayerInfo() {
 			} else {
 				index2 = 0;
 			}
+
+			//populating the layers array inside json.layers
 			json.layers[index2].layers.push({
-				id: data.layers[index].id,
+				id: data.layers[index].id, 
 				name: data.layers[index].name,
 				vis: data.layers[index].defaultVisibility,
 				ident: bool
 			});
+
+			/*
+			Ex: name: "Environmental",
+				layers: [{
+						 id:0,
+						 name:"SPOT ELEVATIONS",
+						 vis: false,
+						 ident: 1
+						}]
+
+			*/
+
+			//json.spot_elevations = {id: 0, vis: false, bool: 0}
 			json[data.layers[index].name.toLowerCase().replace(/\ /g, "_")] = {
 				id: data.layers[index].id,
 				vis: data.layers[index].defaultVisibility,
 				ident: bool
 			};
+			
+
+			//if spot elevations, then set json.spot_elevations = 0
 			if (data.layers[index].name === "SPOT ELEVATIONS") {
 				json.spot_elevations = data.layers[index].id;
 			}
@@ -131,18 +178,20 @@ function f_getLayerInfo() {
 	}
 	return json;
 }
+//gets parcel info??????????
 function f_getParcelInfo() {
-	var json = {},
-		xmlhttp = new XMLHttpRequest(),
+	var json = {}, 
+		xmlhttp = new XMLHttpRequest(), 
 		index,
 		data,
 		length;
-	json.layers = [];
+	json.layers = []; 
 	json.tables = [];
 	xmlhttp.open("GET", DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/?f=json&pretty=false", false);
 	xmlhttp.send();
 	if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 		data = JSON.parse(xmlhttp.responseText);
+		console.log(data) //uncomment to see
 		length = data.layers.length;
 		for(index = 0; index < length; index += 1) {
 			json.layers[data.layers[index].name.replace(/\./g, "_").toLowerCase()] = data.layers[index].id;
@@ -156,6 +205,8 @@ function f_getParcelInfo() {
 }
 layers_json = f_getLayerInfo();
 parcels_json = f_getParcelInfo();
+
+//gets parcel info....
 function f_getFloodInfo() {
 	var index = 0,
 		json = [],
@@ -165,10 +216,11 @@ function f_getFloodInfo() {
 	xmlhttp.send();
 	if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 		data = JSON.parse(xmlhttp.responseText);
+		//console.log(data); //uncomment to see
 		for(index = 1; index < data.layers.length; index += 1)
 		{
-			json.push({
-				name: data.layers[index].name.toLowerCase(),
+			json.push({ //push to json array
+				name: data.layers[index].name.toLowerCase(), 
 				id: data.layers[index].id
 			});
 		}
