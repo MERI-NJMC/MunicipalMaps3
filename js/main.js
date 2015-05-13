@@ -191,7 +191,7 @@ function f_getParcelInfo() {
 	xmlhttp.send();
 	if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 		data = JSON.parse(xmlhttp.responseText);
-		console.log(data) //uncomment to see
+		//console.log(data) //uncomment to see data
 		length = data.layers.length;
 		for(index = 0; index < length; index += 1) {
 			json.layers[data.layers[index].name.replace(/\./g, "_").toLowerCase()] = data.layers[index].id;
@@ -227,9 +227,11 @@ function f_getFloodInfo() {
 	}	
 	return json;
 }
+
+
 function f_getAliases() {
 	"use strict";
-	var aliases = {
+	var aliases = { //key/value pairs
 		"munCodes": {
 			"205": "Carlstadt",
 			"212": "East Rutherford",
@@ -486,6 +488,13 @@ function f_getAliases() {
 	};
 	return aliases;
 }
+
+//Example of how to access the info
+/*var aliases = f_getAliases();
+console.log(aliases.zoneCodes['AV']);
+*/
+
+
 function f_getoutFields() {
 	"use strict";
 	var outFields_json = {
@@ -498,14 +507,18 @@ function f_getoutFields() {
 	};
 	return outFields_json;
 }
+
+
 function f_printMap(pid) {
 	"use strict";
-	window.open("http://arcgis5.njmeadowlands.gov/municipal/print/parcel_info.php?PID=" + pid, "_blank");
+	window.open("http://arcgis5.njmeadowlands.gov/municipal/print/parcel_info.php?PID=" + pid, "_blank"); 
 }
+
+
 function fieldAlias(fieldName, dataSource) {
 	"use strict";
 	var aliases = f_getAliases();
-	dataSource = dataSource !== undefined ? dataSource : '';
+	dataSource = dataSource !== undefined ? dataSource : ''; 
 	aliases.fieldNames.NAME = dataSource + 'Name';
 	aliases.fieldNames.ADDRESS = dataSource + 'Address';
 	if (aliases.fieldNames[fieldName] !== undefined) {
@@ -513,6 +526,8 @@ function fieldAlias(fieldName, dataSource) {
 	}
 	return fieldName;
 }
+
+//gets landUseCode from alias
 function landuseAlias(a) {
 	"use strict";
 	var aliases = f_getAliases();
@@ -521,14 +536,17 @@ function landuseAlias(a) {
 	}
 	return a;
 }
+//gets zoneCode from alias
 function zoningAlias(a) {
 	"use strict";
-	var aliases = f_getAliases();
+	
 	if (aliases.zoneCodes[a] !== undefined) {
 		return aliases.zoneCodes[a];
 	}
 	return a;
 }
+
+//gets numCode from alias
 function muncodeToName(c) {
 	"use strict";
 	var aliases = f_getAliases();
@@ -540,6 +558,8 @@ function muncodeToName(c) {
 	}
 	return c;
 }
+
+
 function formatResult(fieldName, fieldValue, data) {
 	"use strict";
 	var dataSource = (data !== undefined) ? data : '',
@@ -2344,7 +2364,34 @@ function f_search_owner(json) {
 			e_search_progress.style.display = "none";
 		});
 	}
+} 
+
+
+function f_search_facname(json) {
+	"use strict";
+	var search = JSON.parse(json);
+	if (search.facname !== "") {
+		require(["esri/tasks/query", "esri/tasks/QueryTask"], function (Query, QueryTask) {
+			console.log(parcels_json.tables.gis_sde_tbl_cad_rtk);
+			var Q_facname = new Query(),
+			 	QT_facname = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.tables.gis_sde_tbl_cad_rtk),
+				e_search_progress = document.getElementById("search_progress"),
+				outFields_json = f_getoutFields();
+			Q_facname.returnGeometry = false;
+			Q_facename.outFields = outFields_json.owner;
+			Q_facname.where = "WHERE FACILITY_NAME LIKE '%" + search.facname + "%'";
+			console.log(Q_facname.where);
+			QT_facname.execute(Q_facname, f_query_owner_results);
+			e_search_progress.value = "1";
+			e_search_progress.style.display = "none";
+		)};
+	}
 }
+
+
+
+
+
 function e_goBack() {
 	"use strict";
 	document.getElementById("form_submit").style.display = "block";
@@ -2520,16 +2567,26 @@ function f_load_tools() {
 				e.preventDefault();
 				f_search_address(domForm.toJson("search_property"));
 			});
-			document.getElementById("search_owner").addEventListener("click", function () {
+			document.getElementById("search_owner").addEventListener("submit", function () { ////was click for some reason
 				f_search_owner(domForm.toJson("search_owner"));
+			}); 
+			document.getElementById("search_facname").addEventListener("submit", function () { /////testing///////
+				f_search_facname(domForm.toJson("search_facname"));
 			});
 			document.getElementById("owner_toggle").addEventListener("change", function() {
 				document.getElementById("li_property").style.display = "none";
 				document.getElementById("li_owner").style.display = "block";
+				document.getElementById("li_facname").style.display= "none";
 			});
 			document.getElementById("property_toggle").addEventListener("change", function() {
 				document.getElementById("li_property").style.display = "block";
 				document.getElementById("li_owner").style.display = "none";
+				document.getElementById("li_facname").style.display= "none";
+			});
+			document.getElementById("facsearch_toggle").addEventListener("change", function() {
+				document.getElementById("li_property").style.display = "none";
+				document.getElementById("li_owner").style.display = "none";
+				document.getElementById("li_facname").style.display= "block";
 			});
 			document.getElementById("filter").addEventListener("click", function (e) {
 				var toElem = e.originalTarget || e.toElement || e.srcElement;

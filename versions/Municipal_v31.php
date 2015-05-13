@@ -153,7 +153,7 @@
 											<span>Owner</span>
 										</label>
 										<label>
-											<input type="radio" name="search_type" id="" class="" value="">
+											<input type="radio" name="search_type" id="facsearch_toggle" class="search_type" value="facname">
 											<span>FacilityName</span>
 										</label>
 
@@ -428,6 +428,14 @@
 											<input type="submit" class="small button" value="Search for Owner">
 										</form>
 									</li>
+									<li id="li_facname" class="none">
+										<form id="search_facname" onsubmit="return false;">
+											<label>Facility Name:
+												<input type="text" title="Facility Search" name="facname" class="input">
+											</label>
+											<input type="submit" class="small button" value="Search for Facility Name">
+										</form>
+									</li> 
 									<li id="search_tally"></li>
 									<li id="search_export"></li>
 									<li>
