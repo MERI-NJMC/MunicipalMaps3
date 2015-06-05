@@ -2372,19 +2372,20 @@ function f_search_facname(json) {
 	var search = JSON.parse(json);
 	if (search.facname !== "") {
 		require(["esri/tasks/query", "esri/tasks/QueryTask"], function (Query, QueryTask) {
-			console.log(parcels_json.tables.gis_sde_tbl_cad_rtk);
+			//console.log(parcels_json.tables.gis_sde_tbl_cad_rtk);
+			console.log(parcels_json.layers.gis_sde_building);
 			var Q_facname = new Query(),
-			 	QT_facname = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.tables.gis_sde_tbl_cad_rtk),
+			 	QT_facname = new QueryTask(DynamicLayerHost + "/rest/services/Parcels/NJMC_Parcels_2011/MapServer/" + parcels_json.layers.gis_sde_building),
 				e_search_progress = document.getElementById("search_progress"),
 				outFields_json = f_getoutFields();
 			Q_facname.returnGeometry = false;
-			Q_facename.outFields = outFields_json.owner;
+			Q_facname.outFields = outFields_json.facname; //.owner
 			Q_facname.where = "WHERE FACILITY_NAME LIKE '%" + search.facname + "%'";
 			console.log(Q_facname.where);
-			QT_facname.execute(Q_facname, f_query_owner_results);
+			QT_facname.execute(Q_facname, f_query_owners_results);
 			e_search_progress.value = "1";
 			e_search_progress.style.display = "none";
-		)};
+		});
 	}
 }
 
