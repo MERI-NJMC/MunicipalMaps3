@@ -70,7 +70,7 @@ function capthca()
       return 1;
     }
   }
-}
+} 
 function checkURL()
 {
 	if (!$fp = curl_init($_POST["url"]))
